@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airfield-Simulator", "Airfield-Simulator\Airfield-Simulator.csproj", "{8614BAA8-8AFA-4DE3-A790-34287421D9E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airfield-Simulator.GUI", "Airfield-Simulator\Airfield-Simulator.GUI.csproj", "{8614BAA8-8AFA-4DE3-A790-34287421D9E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airfield-Simulator.Core", "Airfield-Simulator.Core\Airfield-Simulator.Core.csproj", "{AD0B58E2-B09D-4D30-8FB0-8EB385901102}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Airfield-Simulator.CoreTests", "Airfield-Simulator.CoreTests\Airfield-Simulator.CoreTests.csproj", "{EA833FBC-B976-4E67-9AB0-EE7ED1312855}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{8614BAA8-8AFA-4DE3-A790-34287421D9E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8614BAA8-8AFA-4DE3-A790-34287421D9E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8614BAA8-8AFA-4DE3-A790-34287421D9E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD0B58E2-B09D-4D30-8FB0-8EB385901102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD0B58E2-B09D-4D30-8FB0-8EB385901102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD0B58E2-B09D-4D30-8FB0-8EB385901102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD0B58E2-B09D-4D30-8FB0-8EB385901102}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA833FBC-B976-4E67-9AB0-EE7ED1312855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA833FBC-B976-4E67-9AB0-EE7ED1312855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA833FBC-B976-4E67-9AB0-EE7ED1312855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA833FBC-B976-4E67-9AB0-EE7ED1312855}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

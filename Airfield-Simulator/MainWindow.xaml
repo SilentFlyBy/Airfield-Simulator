@@ -5,8 +5,97 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Airfield_Simulator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Airfield Simulator" Height="991" Width="1608.333" VerticalAlignment="Top">
+    <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="Padding" Value="5,0,0,0" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="2" />
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="2" />
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+        <Grid Width="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+            <GroupBox>
+                <GroupBox.Header>
+                    <TextBlock TextDecorations="{x:Null}" FontWeight="Bold">Simulationseinstellungen</TextBlock>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label>Anweisungen pro Minute:</Label>
+                    <DockPanel Grid.Column="1">
+                        <Label x:Name="label_instructions_per_minute" Width="Auto" Content="{Binding ElementName=slider_instructions_per_minute, Path=Value}" ContentStringFormat="{}{0:#}" />
+                        <Slider x:Name="slider_instructions_per_minute" VerticalAlignment="Center" Maximum="60" Value="20" Minimum="1" IsSnapToTickEnabled="True"></Slider>
+                    </DockPanel>
+
+                    <Label Grid.Row="1">Flugverkehrsaufkommen:</Label>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Name="combobox_traffic"></ComboBox>
+
+                    <Label Grid.Row="2">Pilotenskills</Label>
+                    <DockPanel Grid.Row="2" Grid.Column="1">
+                        <Label x:Name="label_pilot_skills" Width="Auto" Content="{Binding ElementName=slider_pilot_skills, Path=Value}" ContentStringFormat="{}{0:#}%" />
+                        <Slider x:Name="slider_pilot_skills" VerticalAlignment="Center" Maximum="100" Value="75" Minimum="1" IsSnapToTickEnabled="True"></Slider>
+                    </DockPanel>
+
+                    <Label Grid.Row="3">Simulationsgeschwindigkeit</Label>
+                    <DockPanel Grid.Row="3" Grid.Column="1">
+                        <Label x:Name="label_simulation_speed" Width="Auto" Content="{Binding ElementName=slider_simulation_speed, Path=Value}" ContentStringFormat="{}{0:#}x" />
+                        <Slider x:Name="slider_simulation_speed" VerticalAlignment="Center" Value="1" Maximum="3" Minimum="1" IsSnapToTickEnabled="True"></Slider>
+                    </DockPanel>
+                </Grid>
+            </GroupBox>
+            <GroupBox Grid.Row="1" Margin="1,5,1,1">
+                <GroupBox.Header>
+                    <TextBlock TextDecorations="{x:Null}" FontWeight="Bold">Simulationsdaten</TextBlock>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label>Mausposition:</Label>
+                    <Label Grid.Column="1" Name="label_mouse"></Label>
+
+                    
+                </Grid>
+            </GroupBox>
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <Button Name="button_stop_simulation" Width="125" Margin="5" Click="button_stop_simulation_Click" Background="#FFFF7979" FontWeight="Bold" FontSize="22">Stop</Button>
+                <Button Name="button_start_simulation" Width="125" Margin="5" Click="button_start_simulation_Click" Background="#FF5FFF77" FontWeight="Bold" FontSize="22">Start</Button>
+            </StackPanel>
+        </Grid>
+        <Canvas Name="canvas_draw" Grid.Column="1">
+            <Canvas.Background>
+                <ImageBrush ImageSource="Resources/grass.jpg"/>
+            </Canvas.Background>
+
+        </Canvas>
     </Grid>
 </Window>
