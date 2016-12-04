@@ -23,18 +23,12 @@ namespace Airfield_Simulator.GUI.Draw
         public Dictionary<Aircraft, Image> AircraftImageList { get; set; }
         public double SimulationSpeed { get; set; }
         
-        //Timer für die Wiedergabe der Animation, Interval entspricht der Bildrate
         private ITimer _drawTimer;
         private ISimulationController _simController;
         private Canvas _canvas;
         private double ZoomFactor = 10;
 
 
-        /// <summary>
-        /// DrawController erstellen
-        /// </summary>
-        /// <param name="canvas">Die Oberfläche, auf der die Animation gezeichnet werden soll</param>
-        /// <param name="simcontroller">Der SimulationController, von dem DrawController die zu zeichnenden Informationen bezieht</param>
         public DrawController(ITimer timer, Canvas canvas, ISimulationController simcontroller)
         {
             this._canvas = canvas;
@@ -58,8 +52,6 @@ namespace Airfield_Simulator.GUI.Draw
 
         private void OnDrawTimerTick()
         {
-            //Hole alle Informationen vom SimulationController und Zeichne Frame
-
             foreach(Aircraft currentaircraft in _simController.AirplaneManager.AircraftList)
             {
                 Image currentimage = null;

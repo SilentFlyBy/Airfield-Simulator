@@ -16,10 +16,8 @@ namespace Airfield_Simulator.Core.Simulation
         public IAirplaneManager AirplaneManager { get; private set; }
         public IFlightDirector FlightDirector { get; private set; }
 
-        //Gibt an, ob die Simulation läuft
         public bool Running { get; private set; }
 
-        //Zentraler Timer, der in regelmäßigen Intervallen ein Ereignis auslöst
         internal ITimer timer;
 
         private Random random;

@@ -11,9 +11,6 @@ using System.Windows.Input;
 
 namespace Airfield_Simulator
 {
-    /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public ISimulationProperties SimProperties { get; set; }
