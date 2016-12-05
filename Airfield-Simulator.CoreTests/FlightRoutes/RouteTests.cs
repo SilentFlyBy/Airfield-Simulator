@@ -85,8 +85,8 @@ namespace Airfield_Simulator.Core.FlightRoutes.Tests
                 Assert.That(array[0], Is.Null);
                 Assert.That(array[1], Is.Null);
                 Assert.That(array[4], Is.Null);
-                Assert.That(array[2].Latitude, Is.EqualTo(1000));
-                Assert.That(array[3].Latitude, Is.EqualTo(1000));
+                Assert.That(array[2].Y, Is.EqualTo(1000));
+                Assert.That(array[3].Y, Is.EqualTo(1000));
             }
 
             else

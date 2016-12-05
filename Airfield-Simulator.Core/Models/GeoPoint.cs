@@ -8,13 +8,14 @@ namespace Airfield_Simulator.Core.Models
 {
     public class GeoPoint
     {
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
 
-        public GeoPoint(double lon, double lat)
+
+        public GeoPoint(double x, double y)
         {
-            Latitude = lon;
-            Longitude = lat;
+            X = x;
+            Y = y;
         }
 
         public static double GetDistance(GeoPoint point_a, GeoPoint point_b)

@@ -8,6 +8,8 @@ namespace Airfield_Simulator.Core.Simulation
 {
     public interface IFlightDirector
     {
+        int InstructionsPerMinute { get; }
+
         void Init();
         void Start();
         void Stop();

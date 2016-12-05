@@ -64,8 +64,8 @@ namespace Airfield_Simulator.GUI.Draw
                 {
                     currentimage = AddAircraft(currentaircraft);
                 }
-                double bottom = currentaircraft.Position.Longitude / ZoomFactor;
-                double left = currentaircraft.Position.Latitude / ZoomFactor;
+                double bottom = currentaircraft.Position.X / ZoomFactor;
+                double left = currentaircraft.Position.Y / ZoomFactor;
 
                 Canvas.SetBottom(currentimage, bottom);
                 Canvas.SetLeft(currentimage, left);

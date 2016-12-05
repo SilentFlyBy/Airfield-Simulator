@@ -36,7 +36,90 @@ namespace Airfield_Simulator.Core.FlightRoutes
 
         public IRoute GetRoute(RouteDestination destination, GeoPoint currentlocation)
         {
+            if(destination == RouteDestination.Arrival)
+            {
+                return GetArrivalRoute(currentlocation);
+            }
+            else if(destination == RouteDestination.Departure)
+            {
+                return GetDepartureRoute(currentlocation);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private IRoute GetDepartureRoute(GeoPoint currentlocation)
+        {
+            if(weatherController.WindDegrees <180)
+            {
+                return GetDepartureRoute09(currentlocation);
+            }
+            else
+            {
+                return GetDepartureRoute27(currentlocation);
+            }
+        }
+
+        private IRoute GetDepartureRoute27(GeoPoint currentlocation)
+        {
             throw new NotImplementedException();
+        }
+
+        private IRoute GetDepartureRoute09(GeoPoint currentlocation)
+        {
+            throw new NotImplementedException();
+        }
+
+        private IRoute GetArrivalRoute(GeoPoint currentlocation)
+        {
+            if (weatherController.WindDegrees < 180)
+            {
+                return GetArrivalRoute09(currentlocation);
+            }
+            else
+            {
+                return GetArrivalRoute27(currentlocation);
+            }
+        }
+
+        private IRoute GetArrivalRoute27(GeoPoint currentlocation)
+        {
+            Route returnroute = new Route();
+
+            if(currentlocation.Y > 0)
+            {
+                returnroute.Add(AirspaceWaypoints.DownwindNorth);
+            }
+            else
+            {
+                returnroute.Add(AirspaceWaypoints.DownwindSouth);
+            }
+
+            returnroute.Add(AirspaceWaypoints.Final27);
+            returnroute.Add(AirspaceWaypoints.TouchDown27);
+
+            return returnroute;
+        }
+
+        private IRoute GetArrivalRoute09(GeoPoint currentlocation)
+        {
+            Route returnroute = new Route();
+
+            if (currentlocation.Y > 0)
+            {
+                returnroute.Add(AirspaceWaypoints.DownwindNorth);
+            }
+            else
+            {
+                returnroute.Add(AirspaceWaypoints.DownwindSouth);
+            }
+
+            returnroute.Add(AirspaceWaypoints.Final09);
+            returnroute.Add(AirspaceWaypoints.TouchDown09);
+
+            return returnroute;
         }
     }
 }

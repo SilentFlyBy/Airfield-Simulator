@@ -35,8 +35,8 @@ namespace Airfield_Simulator.Core.Tests.Simulation
         {
             Aircraft ac = ApManager.CreateAircraft(new GeoPoint(2, 3));
 
-            Assert.IsTrue(ac.Position.Latitude == 2);
-            Assert.IsTrue(ac.Position.Longitude == 3);
+            Assert.IsTrue(ac.Position.X == 2);
+            Assert.IsTrue(ac.Position.Y == 3);
             Assert.IsTrue(ApManager.AircraftList.Last() == ac);
         }
 

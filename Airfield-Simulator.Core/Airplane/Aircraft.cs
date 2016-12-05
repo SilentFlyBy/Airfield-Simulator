@@ -113,8 +113,8 @@ namespace Airfield_Simulator.Core.Airplane
 
             double bearing = ActualHeading * Math.PI / 180;
 
-            Position.Latitude = Position.Latitude + traveled_distance * Math.Sin(bearing);
-            Position.Longitude = Position.Longitude + traveled_distance * Math.Cos(bearing);
+            Position.Y = Position.Y + traveled_distance * Math.Sin(bearing);
+            Position.X = Position.X + traveled_distance * Math.Cos(bearing);
         }
 
         private void Turn()

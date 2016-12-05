@@ -10,6 +10,7 @@ namespace Airfield_Simulator.Core.Models
     public interface ISimulationProperties : INotifyPropertyChanged
     {
         double SimulationSpeed { get; set; }
+        int InstructionsPerMinute { get; set; }
 
         void Reset();
     }

@@ -12,17 +12,32 @@ namespace Airfield_Simulator.Core.Models
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        private double _simulationSpeed;
+        private double simulationSpeed;
         public double SimulationSpeed
         {
             get
             {
-                return _simulationSpeed;
+                return simulationSpeed;
             }
             set
             {
-                _simulationSpeed = value;
+                simulationSpeed = value;
                 NotifyPropertyChanged("SimulationSpeed");
+            }
+        }
+
+        private int instructionsPerMinute;
+        public int InstructionsPerMinute
+        {
+            get
+            {
+                return instructionsPerMinute;
+            }
+
+            set
+            {
+                instructionsPerMinute = value;
+                NotifyPropertyChanged("InstructionsPerMinute");
             }
         }
 
