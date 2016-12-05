@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace Airfield_Simulator.CoreTests.Simulation
     [TestFixture]
     public class FlightDirectorTest
     {
+        private FlightDirector flightDirector;
         private Mock<ISimulationProperties> simulationProperties;
         private Mock<IAirplaneManager> airplaneManager;
         private Mock<IRouter> router;
@@ -25,6 +27,8 @@ namespace Airfield_Simulator.CoreTests.Simulation
             this.simulationProperties = new Mock<ISimulationProperties>();
             this.airplaneManager = new Mock<IAirplaneManager>();
             this.router = new Mock<IRouter>();
+
+            this.flightDirector = new FlightDirector(airplaneManager.Object, router.Object, simulationProperties.Object);
         }
 
 
@@ -44,6 +48,16 @@ namespace Airfield_Simulator.CoreTests.Simulation
         public void StopTest()
         {
             Assert.Fail();
+        }
+
+        [Test]
+        public void PropertyChangedTest()
+        {
+            simulationProperties.SetupSet(m => m.InstructionsPerMinute = It.IsAny<int>()).Raises(e => e.PropertyChanged += null, this, new PropertyChangedEventArgs("InstructionsPerMinute"));
+            simulationProperties.SetupGet(m => m.InstructionsPerMinute).Returns(5);
+            simulationProperties.Object.InstructionsPerMinute = 5;
+
+            Assert.That(flightDirector.InstructionsPerMinute, Is.EqualTo(5));
         }
     }
 }
