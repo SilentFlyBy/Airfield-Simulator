@@ -28,23 +28,50 @@ namespace Airfield_Simulator.Core.FlightRoutes.Tests
         [Test]
         public void GetRouteTest()
         {
-            GeoPoint southWestLocation = new GeoPoint(0, 0);
-            GeoPoint southEastLocation = new GeoPoint(1200, 0);
-            GeoPoint northWestLocation = new GeoPoint(0, 1000);
-            GeoPoint northEastLocation = new GeoPoint(1200, 1000);
+            GeoPoint southWestLocation = new GeoPoint(-5000, -5000);
+            GeoPoint southEastLocation = new GeoPoint(5000, -5000);
+            GeoPoint northWestLocation = new GeoPoint(5000, -5000);
+            GeoPoint northEastLocation = new GeoPoint(5000, 5000);
 
-            weatherController.SetupProperty(m => m.WindDegrees, 179);
+            weatherController.SetupGet(m => m.WindDegrees).Returns(179);
             IRoute approachSouthWest09 = router.GetRoute(RouteDestination.Arrival, southWestLocation);
-            IRoute approachSouthEast09 = router.GetRoute(RouteDestination.Arrival, southEastLocation);
-            IRoute approachNorthWest09 = router.GetRoute(RouteDestination.Arrival, northWestLocation);
-            IRoute approachNorthEast09 = router.GetRoute(RouteDestination.Arrival, northEastLocation);
+            Assert.That(approachSouthWest09, Contains.Item(AirspaceWaypoints.DownwindSouth));
+            Assert.That(approachSouthWest09, Contains.Item(AirspaceWaypoints.Final09).Or.Contains(AirspaceWaypoints.Final09Long));
 
-            weatherController.SetupProperty(m => m.WindDegrees, 181);
+            IRoute approachSouthEast09 = router.GetRoute(RouteDestination.Arrival, southEastLocation);
+            Assert.That(approachSouthEast09, Contains.Item(AirspaceWaypoints.DownwindSouth));
+            Assert.That(approachSouthEast09, Contains.Item(AirspaceWaypoints.Final09).Or.Contains(AirspaceWaypoints.Final09Long));
+
+
+
+            IRoute approachNorthWest09 = router.GetRoute(RouteDestination.Arrival, northWestLocation);
+            Assert.That(approachNorthWest09, Contains.Item(AirspaceWaypoints.DownwindNorth));
+            Assert.That(approachNorthWest09, Contains.Item(AirspaceWaypoints.Final09).Or.Contains(AirspaceWaypoints.Final09Long));
+
+            IRoute approachNorthEast09 = router.GetRoute(RouteDestination.Arrival, northEastLocation);
+            Assert.That(approachNorthEast09, Contains.Item(AirspaceWaypoints.DownwindNorth));
+            Assert.That(approachNorthEast09, Contains.Item(AirspaceWaypoints.Final09).Or.Contains(AirspaceWaypoints.Final09Long));
+
+
+
+            weatherController.SetupGet(m => m.WindDegrees).Returns(181);
             IRoute approachSouthWest27 = router.GetRoute(RouteDestination.Arrival, southWestLocation);
+            Assert.That(approachSouthWest27, Contains.Item(AirspaceWaypoints.DownwindSouth));
+            Assert.That(approachSouthWest27, Contains.Item(AirspaceWaypoints.Final27).Or.Contains(AirspaceWaypoints.Final27Long));
+
             IRoute approachSouthEast27 = router.GetRoute(RouteDestination.Arrival, southEastLocation);
+            Assert.That(approachSouthEast27, Contains.Item(AirspaceWaypoints.DownwindSouth));
+            Assert.That(approachSouthEast27, Contains.Item(AirspaceWaypoints.Final27).Or.Contains(AirspaceWaypoints.Final27Long));
+
+
+
             IRoute approachNorthWest27 = router.GetRoute(RouteDestination.Arrival, northWestLocation);
+            Assert.That(approachNorthWest27, Contains.Item(AirspaceWaypoints.DownwindNorth));
+            Assert.That(approachNorthWest27, Contains.Item(AirspaceWaypoints.Final27).Or.Contains(AirspaceWaypoints.Final27Long));
+
             IRoute approachNorthEast27 = router.GetRoute(RouteDestination.Arrival, northEastLocation);
-            Assert.Fail();
+            Assert.That(approachNorthEast27, Contains.Item(AirspaceWaypoints.DownwindNorth));
+            Assert.That(approachNorthEast27, Contains.Item(AirspaceWaypoints.Final27).Or.Contains(AirspaceWaypoints.Final27Long));
         }
     }
 }

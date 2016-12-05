@@ -47,6 +47,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FlightRoutes\AirspaceWaypoints.cs" />
     <Compile Include="FlightRoutes\ArrivalRoute.cs" />
     <Compile Include="FlightRoutes\DepartureRoute.cs" />
     <Compile Include="FlightRoutes\IRoute.cs" />

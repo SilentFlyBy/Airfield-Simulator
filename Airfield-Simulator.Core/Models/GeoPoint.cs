@@ -11,10 +11,10 @@ namespace Airfield_Simulator.Core.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
-        public GeoPoint(double lat, double lon)
+        public GeoPoint(double lon, double lat)
         {
-            Latitude = lat;
-            Longitude = lon;
+            Latitude = lon;
+            Longitude = lat;
         }
 
         public static double GetDistance(GeoPoint point_a, GeoPoint point_b)
