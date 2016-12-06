@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Airfield_Simulator.CoreTests.Simulation
 {
     [TestFixture]
-    public class FlightDirectorTest
+    public class FlightDirectorTests
     {
         private FlightDirector flightDirector;
         private Mock<ISimulationProperties> simulationProperties;
@@ -51,7 +51,7 @@ namespace Airfield_Simulator.CoreTests.Simulation
         }
 
         [Test]
-        public void PropertyChangedTest()
+        public void SimulationPropertyChangedTest()
         {
             simulationProperties.SetupSet(m => m.InstructionsPerMinute = It.IsAny<int>()).Raises(e => e.PropertyChanged += null, this, new PropertyChangedEventArgs("InstructionsPerMinute"));
             simulationProperties.SetupGet(m => m.InstructionsPerMinute).Returns(5);

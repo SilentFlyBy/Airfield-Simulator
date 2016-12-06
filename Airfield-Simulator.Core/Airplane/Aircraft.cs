@@ -17,7 +17,25 @@ namespace Airfield_Simulator.Core.Airplane
 
 
         public ISimulationProperties SimulationProperties { get; set; }
-        public double ActualHeading { get; private set; }
+        private double actualHeading;
+        public double ActualHeading
+        {
+            get
+            {
+                return actualHeading;
+            }
+            set
+            {
+                if(IsValidHeading(value))
+                {
+                    actualHeading = value;
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("Value must be between 0 and 359");
+                }
+            }
+        }
         public double ActualAltitude { get; private set; }
         public GeoPoint Position { get; private set; }
 
@@ -39,10 +57,10 @@ namespace Airfield_Simulator.Core.Airplane
         public string FlightNumber { get; set; }
 
 
-        private double TargetHeading { get; set; }
-        private double TargetAltitude { get; set; }
+        private double TargetHeading;
+        private double TargetAltitude;
 
-        private TurnDirection TurnDirection { get; set; }
+        private TurnDirection TurnDirection;
 
         private double intervals_per_second
         {
@@ -70,13 +88,29 @@ namespace Airfield_Simulator.Core.Airplane
         public void TurnLeft(double new_heading)
         {
             TurnDirection = TurnDirection.Left;
-            TargetHeading = new_heading;
+
+            if (IsValidHeading(new_heading))
+            {
+                TargetHeading = new_heading;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Value must be between 0 and 259");
+            }
         }
 
         public void TurnRight(double new_heading)
         {
             TurnDirection = TurnDirection.Right;
-            TargetHeading = new_heading;
+
+            if(IsValidHeading(new_heading))
+            {
+                TargetHeading = new_heading;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Value must be between 0 and 259");
+            }
         }
 
         public void ChangeHeight(double new_height)
@@ -121,7 +155,19 @@ namespace Airfield_Simulator.Core.Airplane
         {
             if (ActualHeading - TargetHeading >= 1 || ActualHeading - TargetHeading <= -1)
             {
-                ActualHeading = ActualHeading + (int)TurnDirection * (STANDARD_RATE_TURN / intervals_per_second) * SimulationProperties.SimulationSpeed;
+                double tempheading = ActualHeading + (int)TurnDirection * (STANDARD_RATE_TURN / intervals_per_second) * SimulationProperties.SimulationSpeed;
+                if(tempheading < 0)
+                {
+                    ActualHeading = 360 + tempheading;
+                }
+                else if(tempheading > 359)
+                {
+                    ActualHeading = tempheading - 360;
+                }
+                else
+                {
+                    ActualHeading = tempheading;
+                }
             }
         }
 
@@ -148,6 +194,19 @@ namespace Airfield_Simulator.Core.Airplane
         private void Descend()
         {
             ActualAltitude = ActualAltitude - ClimbRate / intervals_per_second;
+        }
+
+
+        private bool IsValidHeading(double d)
+        {
+            if(d < 0 || d > 359)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

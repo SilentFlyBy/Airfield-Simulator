@@ -22,6 +22,7 @@ namespace Airfield_Simulator.Core.Airplane.Tests
         public void Initialize()
         {
             Timer = new Mock<ITimer>();
+            Timer.SetupGet(t => t.Interval).Returns(1000);
             ac = new Aircraft(Timer.Object, new GeoPoint(5, 2), new SimulationProperties() { SimulationSpeed = 2.8 });
         }
 
@@ -37,13 +38,18 @@ namespace Airfield_Simulator.Core.Airplane.Tests
         [Test]
         public void TurnLeftTest()
         {
-            Assert.Fail();
+            ac.TurnLeft(270);
+            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+            Assert.That(ac.ActualHeading, Is.LessThan(360));
         }
 
         [Test]
         public void TurnRightTest()
         {
-            Assert.Fail();
+            ac.ActualHeading = 359;
+            ac.TurnRight(90);
+            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+            Assert.That(ac.ActualHeading, Is.GreaterThan(0));
         }
 
         [Test]

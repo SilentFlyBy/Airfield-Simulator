@@ -25,13 +25,14 @@ namespace Airfield_Simulator
         {
             InitializeComponent();
 
-            SimProperties = new SimulationProperties();
-            SimProperties.SimulationSpeed = 1;
-
-            Bindings bindings = new Bindings(this.SimProperties);
+            Bindings bindings = new Bindings();
 
             using (IKernel kernel = new StandardKernel(bindings))
             {
+                SimProperties = kernel.Get<ISimulationProperties>();
+                SimProperties.SimulationSpeed = 1;
+                SimProperties.InstructionsPerMinute = 10;
+
                 var canvas = new Ninject.Parameters.ConstructorArgument("canvas", this.canvas_draw);
                 SimController = kernel.Get<ISimulationController>();
                 DrawController = kernel.Get<IDrawController>(canvas);

@@ -12,6 +12,7 @@ namespace Airfield_Simulator.Core.Simulation
     {
         List<Aircraft> AircraftList { get; }
 
+        event CollisionEventHandler Collision;
 
         Aircraft CreateAircraft(GeoPoint position);
         void RemoveAircraft(Aircraft aircaft);

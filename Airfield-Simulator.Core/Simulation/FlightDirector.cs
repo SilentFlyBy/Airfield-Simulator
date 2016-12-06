@@ -23,11 +23,11 @@ namespace Airfield_Simulator.Core.Simulation
 
 
 
-        public FlightDirector(IAirplaneManager airplanemanager, IRouter router, ISimulationProperties properties)
+        public FlightDirector(IAirplaneManager airplanemanager, IRouter router, ISimulationProperties simprops)
         {
             this.airplaneManager = airplanemanager;
             this.router = router;
-            this.simulationProperties = properties;
+            this.simulationProperties = simprops;
 
             this.simulationProperties.PropertyChanged += UpdateInstructionsPerMinute;
         }

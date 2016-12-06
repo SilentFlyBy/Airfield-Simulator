@@ -14,24 +14,16 @@ namespace Airfield_Simulator.GUI
 {
     public class Bindings : NinjectModule
     {
-        private ISimulationProperties simProperties;
-
-
-        public Bindings(ISimulationProperties simprops)
-        {
-            this.simProperties = simprops;
-        }
-
-
         public override void Load()
         {
-            Bind<ISimulationController>().To<SimulationController>().InSingletonScope().WithConstructorArgument("simprops", this.simProperties);
-            Bind<IAirplaneManager>().To<AirplaneManager>().InSingletonScope().WithConstructorArgument("simprops", this.simProperties);
+            Bind<ISimulationController>().To<SimulationController>().InSingletonScope();
+            Bind<IAirplaneManager>().To<AirplaneManager>().InSingletonScope();
             Bind<IFlightDirector>().To<FlightDirector>().InSingletonScope();
             Bind<ITimer>().To<SimulationTimer>().InSingletonScope();
             Bind<IDrawController>().To<DrawController>().InSingletonScope().WithConstructorArgument("canvas");
             Bind<IRouter>().To<Router>().InSingletonScope();
-            Bind<IWeatherController>().To<WeatherController>();
+            Bind<IWeatherController>().To<WeatherController>().InSingletonScope();
+            Bind<ISimulationProperties>().To<SimulationProperties>().InSingletonScope();
         }
     }
 }

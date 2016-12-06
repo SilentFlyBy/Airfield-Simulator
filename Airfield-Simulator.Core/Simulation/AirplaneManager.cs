@@ -12,7 +12,9 @@ namespace Airfield_Simulator.Core.Simulation
     public class AirplaneManager : IAirplaneManager
     {
         public ISimulationProperties SimulationProperties { get; set; }
-        public List<Aircraft> AircraftList { get; }
+        public List<Aircraft> AircraftList { get; private set; }
+
+        public event CollisionEventHandler Collision;
 
         private ITimer timer { get; set; }
 
@@ -41,6 +43,14 @@ namespace Airfield_Simulator.Core.Simulation
         public void Reset()
         {
             AircraftList.Clear();
+        }
+
+        private void OnCollision(object sender, CollisionEventArgs e)
+        {
+            if(this.Collision != null)
+            {
+                Collision(sender, e);
+            }
         }
     }
 }

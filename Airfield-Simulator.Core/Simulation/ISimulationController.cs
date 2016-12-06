@@ -12,6 +12,7 @@ namespace Airfield_Simulator.Core.Simulation
         IAirplaneManager AirplaneManager { get; }
         IFlightDirector FlightDirector { get; }
 
+
         void Init(ISimulationProperties simprops);
         void Start();
         void Stop();

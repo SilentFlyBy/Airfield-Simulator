@@ -64,13 +64,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Models\SimulationPropertiesTest.cs" />
+    <Compile Include="Models\SimulationPropertiesTests.cs" />
     <Compile Include="Simulation\AirplaneManagerTests.cs" />
     <Compile Include="Airplane\AircraftTests.cs" />
     <Compile Include="FlightRoutes\RouterTests.cs" />
     <Compile Include="FlightRoutes\RouteTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Simulation\FlightDirectorTest.cs" />
+    <Compile Include="Simulation\FlightDirectorTests.cs" />
     <Compile Include="Simulation\SimulationControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
