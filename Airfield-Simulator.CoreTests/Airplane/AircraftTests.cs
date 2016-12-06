@@ -37,37 +37,37 @@ namespace Airfield_Simulator.Core.Airplane.Tests
         [Test]
         public void TurnLeftTest()
         {
-            ac.TurnLeft(210);
+            Assert.Fail();
         }
 
         [Test]
         public void TurnRightTest()
         {
-            ac.TurnRight(210);
+            Assert.Fail();
         }
 
         [Test]
         public void ChangeHeightTest()
         {
-            ac.ChangeHeight(2000);
+            Assert.Fail();
         }
 
         [Test]
         public void TakeOffTest()
         {
-            ac.TakeOff();
+            Assert.Fail();
         }
 
         [Test]
         public void ClearToLandTest()
         {
-            ac.ClearToLand();
+            Assert.Fail();
         }
 
         [Test]
         public void AbortLandingTest()
         {
-            ac.AbortLanding();
+            Assert.Fail();
         }
     }
 }
