@@ -53,6 +53,53 @@ namespace Airfield_Simulator.Core.Airplane.Tests
         }
 
         [Test]
+        public void FlyTest()
+        {
+            //Heading 0
+            ac.Position.X = 0;
+            ac.Position.Y = 0;
+            ac.ActualHeading = 0;
+
+            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+
+            Assert.That(ac.Position.X, Is.EqualTo(0));
+            Assert.That(ac.Position.Y, Is.GreaterThan(0));
+
+
+            //Heading 90
+            ac.Position.X = 0;
+            ac.Position.Y = 0;
+            ac.ActualHeading = 90;
+
+            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+
+            Assert.That(ac.Position.X, Is.GreaterThan(0));
+            Assert.That(ac.Position.Y, Is.EqualTo(0));
+
+
+            //Heading 180
+            ac.Position.X = 0;
+            ac.Position.Y = 0;
+            ac.ActualHeading = 180;
+
+            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+
+            Assert.That(ac.Position.X, Is.EqualTo(0));
+            Assert.That(ac.Position.Y, Is.LessThan(0));
+
+
+            //Heading 270
+            ac.Position.X = 0;
+            ac.Position.Y = 0;
+            ac.ActualHeading = 270;
+
+            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+
+            Assert.That(ac.Position.X, Is.LessThan(0));
+            Assert.That(ac.Position.Y, Is.EqualTo(0));
+        }
+
+        [Test]
         public void ChangeHeightTest()
         {
             Assert.Fail();
