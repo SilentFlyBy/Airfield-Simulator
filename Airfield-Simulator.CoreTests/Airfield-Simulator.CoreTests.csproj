@@ -64,6 +64,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Models\GeoPointTests.cs" />
     <Compile Include="Models\SimulationPropertiesTests.cs" />
     <Compile Include="Simulation\AirplaneManagerTests.cs" />
     <Compile Include="Airplane\AircraftTests.cs" />

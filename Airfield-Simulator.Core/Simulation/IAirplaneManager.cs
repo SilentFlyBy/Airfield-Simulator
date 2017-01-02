@@ -14,7 +14,7 @@ namespace Airfield_Simulator.Core.Simulation
 
         event CollisionEventHandler Collision;
 
-        Aircraft CreateAircraft(GeoPoint position);
+        Aircraft CreateAircraft(GeoPoint position, int heading);
         void RemoveAircraft(Aircraft aircaft);
         void Reset();
     }

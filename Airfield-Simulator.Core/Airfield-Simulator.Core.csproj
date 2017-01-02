@@ -62,6 +62,7 @@
     <Compile Include="Simulation\CollisionEventArgs.cs" />
     <Compile Include="Simulation\CollisionEventHandler.cs" />
     <Compile Include="Simulation\FlightDirector.cs" />
+    <Compile Include="Simulation\IAirplaneFactory.cs" />
     <Compile Include="Simulation\IAirplaneManager.cs" />
     <Compile Include="Simulation\IFlightDirector.cs" />
     <Compile Include="Simulation\ISimulationController.cs" />

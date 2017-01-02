@@ -20,7 +20,7 @@ namespace Airfield_Simulator.Core.Models
 
         public static double GetDistance(GeoPoint point_a, GeoPoint point_b)
         {
-            throw new NotImplementedException();
+            return Math.Round(Math.Sqrt(Math.Pow((point_b.X - point_a.X), 2)+ Math.Pow((point_b.Y - point_a.Y), 2)), 1);
         }
     }
 }

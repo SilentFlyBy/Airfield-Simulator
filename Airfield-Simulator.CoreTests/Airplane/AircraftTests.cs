@@ -23,13 +23,13 @@ namespace Airfield_Simulator.Core.Airplane.Tests
         {
             Timer = new Mock<ITimer>();
             Timer.SetupGet(t => t.Interval).Returns(1000);
-            ac = new Aircraft(Timer.Object, new GeoPoint(5, 2), new SimulationProperties() { SimulationSpeed = 2.8 });
+            ac = new Aircraft(Timer.Object, new GeoPoint(5, 2), 0, new SimulationProperties() { SimulationSpeed = 2.8 });
         }
 
         [Test]
         public void AircraftTest()
         {
-            ac = new Aircraft(Timer.Object, new GeoPoint(5, 2), new SimulationProperties() { SimulationSpeed = 2.8 });
+            ac = new Aircraft(Timer.Object, new GeoPoint(5, 2), 0, new SimulationProperties() { SimulationSpeed = 2.8 });
 
             Assert.IsTrue(ac.Position.X == 5 && ac.Position.Y == 2);
             Assert.IsTrue(ac.SimulationProperties.SimulationSpeed == 2.8);

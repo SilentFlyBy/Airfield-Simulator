@@ -74,7 +74,7 @@ namespace Airfield_Simulator.Core.Airplane
 
 
 
-        public Aircraft(ITimer t, GeoPoint position, ISimulationProperties simprops)
+        public Aircraft(ITimer t, GeoPoint position, int heading, ISimulationProperties simprops)
         {
             timer = t;
             this.SimulationProperties = simprops;
@@ -82,6 +82,7 @@ namespace Airfield_Simulator.Core.Airplane
             t.Tick += (o, args) => { OnTick(); };
 
             Position = position;
+            ActualHeading = heading;
         }
 
 
@@ -147,8 +148,8 @@ namespace Airfield_Simulator.Core.Airplane
 
             double bearing = ActualHeading * Math.PI / 180;
 
-            Position.Y = Position.Y + traveled_distance * Math.Sin(bearing);
-            Position.X = Position.X + traveled_distance * Math.Cos(bearing);
+            Position.Y = Position.Y + traveled_distance * Math.Cos(bearing);
+            Position.X = Position.X + traveled_distance * Math.Sin(bearing);
         }
 
         private void Turn()

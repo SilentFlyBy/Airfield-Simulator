@@ -41,7 +41,7 @@ namespace Airfield_Simulator.Core.Simulation
         {
             if(GetRandomBoolean(1))
             {
-                AirplaneManager.CreateAircraft(new GeoPoint(1000, 1000));
+                AirplaneManager.CreateAircraft(new GeoPoint(1000, 1000), 0);
             }
         }
 
@@ -65,7 +65,8 @@ namespace Airfield_Simulator.Core.Simulation
 
         public void Start()
         {
-            AirplaneManager.CreateAircraft(new GeoPoint(0, 0));
+            AirplaneManager.CreateAircraft(new GeoPoint(0, 0), 90);
+            AirplaneManager.CreateAircraft(new GeoPoint(1000, 0), 270);
             timer.Start();
             Running = true;
         }

@@ -24,6 +24,9 @@ namespace Airfield_Simulator.Core.Tests.Simulation
         public void Initialize()
         {
             Timer = new Mock<ITimer>();
+            Timer.SetupAllProperties();
+            Timer.Object.Interval = 1;
+
             Simprops = new Mock<ISimulationProperties>();
 
             ApManager = new AirplaneManager(Timer.Object, Simprops.Object);
@@ -33,17 +36,18 @@ namespace Airfield_Simulator.Core.Tests.Simulation
         [Test]
         public void CreateAircraftTest()
         {
-            Aircraft ac = ApManager.CreateAircraft(new GeoPoint(2, 3));
+            Aircraft ac = ApManager.CreateAircraft(new GeoPoint(2, 3), 10);
 
             Assert.IsTrue(ac.Position.X == 2);
             Assert.IsTrue(ac.Position.Y == 3);
+            Assert.That(ac.ActualHeading, Is.EqualTo(10));
             Assert.IsTrue(ApManager.AircraftList.Last() == ac);
         }
 
         [Test]
         public void RemoveAircraftTest()
         {
-            Aircraft ac = ApManager.CreateAircraft(new GeoPoint(2, 3));
+            Aircraft ac = ApManager.CreateAircraft(new GeoPoint(2, 3), 10);
             ApManager.AircraftList.Remove(ac);
 
             Assert.That(ApManager.AircraftList.Count, Is.EqualTo(0));
@@ -52,10 +56,42 @@ namespace Airfield_Simulator.Core.Tests.Simulation
         [Test]
         public void ResetTest()
         {
-            Aircraft ac = ApManager.CreateAircraft(new GeoPoint(2, 3));
+            Aircraft ac = ApManager.CreateAircraft(new GeoPoint(2, 3), 10);
             ApManager.Reset();
 
             Assert.IsTrue(ApManager.AircraftList.Count == 0);
+        }
+
+        [Test]
+        public void AirplaneCollisionTest()
+        {
+            bool collisionEventFired = false;
+            ApManager.Collision += (o, e) => { collisionEventFired = true; };
+
+            //Collision
+
+            ApManager.CreateAircraft(new GeoPoint(0, 0), 90);
+            ApManager.CreateAircraft(new GeoPoint(40, 0), 270);
+
+            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+
+            Assert.IsTrue(collisionEventFired);
+
+
+            ApManager.Reset();
+            collisionEventFired = false;
+
+
+            //No collision
+
+            ApManager.CreateAircraft(new GeoPoint(0, 0), 90);
+            ApManager.CreateAircraft(new GeoPoint(201, 0), 270);
+
+            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+
+            Assert.IsFalse(collisionEventFired);
+
+
         }
     }
 }
