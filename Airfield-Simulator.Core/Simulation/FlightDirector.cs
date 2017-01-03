@@ -7,17 +7,31 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Airfield_Simulator.Core.Simulation
 {
     public class FlightDirector : IFlightDirector
     {
-        public int InstructionsPerMinute { get; private set; }
+        private int instructionsPerMinute;
+        public int InstructionsPerMinute
+        {
+            get
+            {
+                return instructionsPerMinute;
+            }
+            private set
+            {
+                instructionsPerMinute = value;
+                this.timer.Interval = 60 / value * 1000;
+            }
+        }
 
 
         private ISimulationProperties simulationProperties;
         private IAirplaneManager airplaneManager;
         private IRouter router;
+        private Timer timer;
 
         private Dictionary<Aircraft, IRoute> AircraftRoutes { get; set; }
 
@@ -29,9 +43,15 @@ namespace Airfield_Simulator.Core.Simulation
             this.router = router;
             this.simulationProperties = simprops;
 
-            this.simulationProperties.PropertyChanged += UpdateInstructionsPerMinute;
+            this.timer = new Timer();
+            this.timer.Elapsed += OnTimerTick;
+            this.simulationProperties.PropertyChanged += UpdateSimulationProperty;
         }
 
+        private void OnTimerTick(object o, ElapsedEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
 
         public void Init()
         {
@@ -40,18 +60,19 @@ namespace Airfield_Simulator.Core.Simulation
 
         public void Start()
         {
-            throw new NotImplementedException();
+            this.timer.Start();
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            this.timer.Stop();
         }
 
 
-        private void UpdateInstructionsPerMinute(object sender, PropertyChangedEventArgs e)
+        private void UpdateSimulationProperty(object sender, PropertyChangedEventArgs e)
         {
-            InstructionsPerMinute = simulationProperties.InstructionsPerMinute;
+            if(e.PropertyName == "InstructionsPerMinute")
+                InstructionsPerMinute = simulationProperties.InstructionsPerMinute;
         }
     }
 }

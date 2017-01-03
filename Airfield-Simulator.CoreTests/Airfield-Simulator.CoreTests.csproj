@@ -71,6 +71,7 @@
     <Compile Include="FlightRoutes\RouterTests.cs" />
     <Compile Include="FlightRoutes\RouteTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simulation\AirplaneSpawnerTests.cs" />
     <Compile Include="Simulation\FlightDirectorTests.cs" />
     <Compile Include="Simulation\SimulationControllerTests.cs" />
   </ItemGroup>

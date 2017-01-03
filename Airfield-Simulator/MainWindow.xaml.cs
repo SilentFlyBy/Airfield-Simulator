@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System;
 
 namespace Airfield_Simulator
 {
@@ -38,12 +39,13 @@ namespace Airfield_Simulator
                 DrawController = kernel.Get<IDrawController>(canvas);
             }
 
+            SimController.AirplaneManager.Collision += (o, e) => OnCollision();
+
             canvas_draw.MouseMove += (o, args) =>
             {
                 ShowMousePosition();
             };
         }
-
 
         public void StartSimulation()
         {
@@ -75,6 +77,13 @@ namespace Airfield_Simulator
         private void button_stop_simulation_Click(object sender, RoutedEventArgs e)
         {
             StopSimulation();
+        }
+
+        private void OnCollision()
+        {
+            SimController.Stop();
+            MessageBoxResult box = MessageBox.Show("Collision!");
+            
         }
     }
 }

@@ -15,34 +15,27 @@ namespace Airfield_Simulator.Core.Simulation
         public ISimulationProperties SimulationProperties { get; set; }
         public IAirplaneManager AirplaneManager { get; private set; }
         public IFlightDirector FlightDirector { get; private set; }
+        public IAirplaneSpawner AirplaneSpawner { get; private set; }
 
         public bool Running { get; private set; }
 
         internal ITimer timer;
 
-        private Random random;
 
-
-        public SimulationController(ITimer timer, IAirplaneManager airplanemanager, IFlightDirector flightdirector, ISimulationProperties simprops)
+        public SimulationController(ITimer timer, IAirplaneManager airplanemanager, IFlightDirector flightdirector, IAirplaneSpawner spawner, ISimulationProperties simprops)
         {
             this.timer = timer;
             this.AirplaneManager = airplanemanager;
             this.FlightDirector = flightdirector;
             this.SimulationProperties = simprops;
-            this.random = new Random();
+            this.AirplaneSpawner = spawner;
 
-            this.timer.Tick += (o, args) =>
-            {
-                OnTimerTick();
-            };
+            this.timer.Tick += OnTimerTick;
         }
 
-        private void OnTimerTick()
+        private void OnTimerTick(object o, EventArgs e)
         {
-            if(GetRandomBoolean(1))
-            {
-                AirplaneManager.CreateAircraft(new GeoPoint(1000, 1000), 0);
-            }
+            
         }
 
         public void Init(ISimulationProperties simprops)
@@ -65,24 +58,20 @@ namespace Airfield_Simulator.Core.Simulation
 
         public void Start()
         {
-            AirplaneManager.CreateAircraft(new GeoPoint(0, 0), 90);
-            AirplaneManager.CreateAircraft(new GeoPoint(1000, 0), 270);
             timer.Start();
             Running = true;
+
+            this.FlightDirector.Start();
+            this.AirplaneSpawner.Start();
         }
 
         public void Stop()
         {
             timer.Stop();
             Running = false;
-        }
 
-
-        private bool GetRandomBoolean(int prapability)
-        {
-            int value = random.Next(0, 100);
-
-            return value <= prapability;
+            this.FlightDirector.Stop();
+            this.AirplaneSpawner.Stop();
         }
     }
 }

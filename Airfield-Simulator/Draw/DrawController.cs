@@ -52,7 +52,7 @@ namespace Airfield_Simulator.GUI.Draw
 
         private void OnDrawTimerTick()
         {
-            foreach(Aircraft currentaircraft in _simController.AirplaneManager.AircraftList)
+            foreach(Aircraft currentaircraft in _simController.AirplaneManager.AircraftList.ToList())
             {
                 Image currentimage = null;
 
@@ -67,8 +67,8 @@ namespace Airfield_Simulator.GUI.Draw
                 double bottom = currentaircraft.Position.Y / ZoomFactor;
                 double left = currentaircraft.Position.X / ZoomFactor;
 
-                Canvas.SetBottom(currentimage, bottom);
-                Canvas.SetLeft(currentimage, left);
+                Canvas.SetBottom(currentimage, bottom + _canvas.ActualHeight/2);
+                Canvas.SetLeft(currentimage, left + _canvas.ActualWidth/2);
                 RotateTransform rotate = new RotateTransform(currentaircraft.ActualHeading, 25, 25);
                 currentimage.RenderTransform = rotate;
             }

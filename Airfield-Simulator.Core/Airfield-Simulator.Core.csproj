@@ -59,10 +59,13 @@
     <Compile Include="Models\SimulationProperties.cs" />
     <Compile Include="Simulation\AirplaneManager.cs" />
     <Compile Include="Airplane\TurnDirection.cs" />
+    <Compile Include="Simulation\AirplaneSpawner.cs" />
+    <Compile Include="Simulation\AirplaneSpawnEventArgs.cs" />
+    <Compile Include="Simulation\AirplaneSpawnEventHandler.cs" />
     <Compile Include="Simulation\CollisionEventArgs.cs" />
     <Compile Include="Simulation\CollisionEventHandler.cs" />
     <Compile Include="Simulation\FlightDirector.cs" />
-    <Compile Include="Simulation\IAirplaneFactory.cs" />
+    <Compile Include="Simulation\IAirplaneSpawner.cs" />
     <Compile Include="Simulation\IAirplaneManager.cs" />
     <Compile Include="Simulation\IFlightDirector.cs" />
     <Compile Include="Simulation\ISimulationController.cs" />

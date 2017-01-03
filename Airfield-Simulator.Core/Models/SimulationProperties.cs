@@ -41,6 +41,20 @@ namespace Airfield_Simulator.Core.Models
             }
         }
 
+        private int aircraftSpawnsPerSecond;
+        public int AircraftSpawnsPerSecond
+        {
+            get
+            {
+                return aircraftSpawnsPerSecond;
+            }
+
+            set
+            {
+                aircraftSpawnsPerSecond = value;
+                NotifyPropertyChanged("AircraftSpawnsPerSecond");
+            }
+        }
 
         public void Reset()
         {

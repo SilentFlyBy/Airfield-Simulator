@@ -24,6 +24,7 @@ namespace Airfield_Simulator.GUI
             Bind<IRouter>().To<Router>().InSingletonScope();
             Bind<IWeatherController>().To<WeatherController>().InSingletonScope();
             Bind<ISimulationProperties>().To<SimulationProperties>().InSingletonScope();
+            Bind<IAirplaneSpawner>().To<AirplaneSpawner>().InSingletonScope();
         }
     }
 }

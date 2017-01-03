@@ -56,9 +56,9 @@ namespace Airfield_Simulator.Core.Simulation
 
         private void OnTimerTick(object sender, EventArgs e)
         {
-            foreach(Aircraft ac in AircraftList)
+            foreach(Aircraft ac in AircraftList.ToList())
             {
-                foreach(Aircraft ac2 in AircraftList)
+                foreach(Aircraft ac2 in AircraftList.ToList())
                 {
                     if (ac == ac2) break;
 

@@ -20,6 +20,7 @@ namespace Airfield_Simulator.Core.Tests.Simulation
         Mock<ITimer> Timer;
         Mock<IFlightDirector> FlightDirector;
         Mock<ISimulationProperties> SimProperties;
+        Mock<IAirplaneSpawner> AirplaneSpawner;
 
 
         [SetUp]
@@ -28,9 +29,10 @@ namespace Airfield_Simulator.Core.Tests.Simulation
             ApManager = new Mock<IAirplaneManager>();
             Timer = new Mock<ITimer>();
             FlightDirector = new Mock<IFlightDirector>();
+            AirplaneSpawner = new Mock<IAirplaneSpawner>();
             SimProperties = new Mock<ISimulationProperties>();
 
-            SimController = new SimulationController(Timer.Object, ApManager.Object, FlightDirector.Object, SimProperties.Object);
+            SimController = new SimulationController(Timer.Object, ApManager.Object, FlightDirector.Object, AirplaneSpawner.Object, SimProperties.Object);
         }
 
 
