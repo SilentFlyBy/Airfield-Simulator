@@ -9,28 +9,31 @@ using Airfield_Simulator.Core.Airplane;
 
 namespace Airfield_Simulator.Core.Simulation
 {
-    public class AirplaneManager : IAirplaneManager
+    public class AirplaneManager : IAirplaneManager, IUpdateFrame
     {
         public ISimulationProperties SimulationProperties { get; set; }
         public List<Aircraft> AircraftList { get; private set; }
 
         public event CollisionEventHandler Collision;
 
-        private ITimer timer { get; set; }
 
-
-        public AirplaneManager(ITimer t, ISimulationProperties simprops)
+        public AirplaneManager(ISimulationProperties simprops)
         {
-            this.timer = t;
-            timer.Tick += OnTimerTick;
             this.AircraftList = new List<Aircraft>();
             this.SimulationProperties = simprops;
+
+            FrameManager.AddUpdateObject(this);
         }
 
 
+        public void UpdateFrame()
+        {
+            CheckForCollision();
+        }
+
         public Aircraft CreateAircraft(GeoPoint position, int heading)
         {
-            Aircraft ac = new Aircraft(timer, position, heading,  SimulationProperties);
+            Aircraft ac = new Aircraft(position, heading,  SimulationProperties);
 
             AircraftList.Add(ac);
             return ac;
@@ -54,17 +57,17 @@ namespace Airfield_Simulator.Core.Simulation
             }
         }
 
-        private void OnTimerTick(object sender, EventArgs e)
+        private void CheckForCollision()
         {
-            foreach(Aircraft ac in AircraftList.ToList())
+            foreach (Aircraft ac in AircraftList.ToList())
             {
-                foreach(Aircraft ac2 in AircraftList.ToList())
+                foreach (Aircraft ac2 in AircraftList.ToList())
                 {
                     if (ac == ac2) break;
 
                     double distance = GeoPoint.GetDistance(ac.Position, ac2.Position);
 
-                    if(distance < 200)
+                    if (distance < 200)
                     {
                         OnCollision(ac, new CollisionEventArgs(ac2));
                     }

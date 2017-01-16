@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Airfield_Simulator.Core.Simulation
 {
-    public interface IAirplaneSpawner
+    public interface IAirplaneSpawner : IUpdateFrame
     {
         event AirplaneSpawnEventHandler AirplaneSpawn;
-
-        void Start();
-        void Stop();
     }
 }

@@ -14,22 +14,20 @@ namespace Airfield_Simulator.Core.Airplane.Tests
     [TestFixture]
     public class AircraftTests
     {
-        Mock<ITimer> Timer;
         Aircraft ac;
 
 
         [SetUp]
         public void Initialize()
         {
-            Timer = new Mock<ITimer>();
-            Timer.SetupGet(t => t.Interval).Returns(1000);
-            ac = new Aircraft(Timer.Object, new GeoPoint(5, 2), 0, new SimulationProperties() { SimulationSpeed = 2.8 });
+            ac = new Aircraft(new GeoPoint(5, 2), 0, new SimulationProperties() { SimulationSpeed = 2.8 });
+            FrameManager.DeltaTime = 1;
         }
 
         [Test]
         public void AircraftTest()
         {
-            ac = new Aircraft(Timer.Object, new GeoPoint(5, 2), 0, new SimulationProperties() { SimulationSpeed = 2.8 });
+            ac = new Aircraft(new GeoPoint(5, 2), 0, new SimulationProperties() { SimulationSpeed = 2.8 });
 
             Assert.IsTrue(ac.Position.X == 5 && ac.Position.Y == 2);
             Assert.IsTrue(ac.SimulationProperties.SimulationSpeed == 2.8);
@@ -39,7 +37,6 @@ namespace Airfield_Simulator.Core.Airplane.Tests
         public void TurnLeftTest()
         {
             ac.TurnLeft(270);
-            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
             Assert.That(ac.ActualHeading, Is.LessThan(360));
         }
 
@@ -48,7 +45,6 @@ namespace Airfield_Simulator.Core.Airplane.Tests
         {
             ac.ActualHeading = 359;
             ac.TurnRight(90);
-            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
             Assert.That(ac.ActualHeading, Is.GreaterThan(0));
         }
 
@@ -60,7 +56,7 @@ namespace Airfield_Simulator.Core.Airplane.Tests
             ac.Position.Y = 0;
             ac.ActualHeading = 0;
 
-            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+            ac.UpdateFrame();
 
             Assert.That(ac.Position.X, Is.EqualTo(0));
             Assert.That(ac.Position.Y, Is.GreaterThan(0));
@@ -71,7 +67,7 @@ namespace Airfield_Simulator.Core.Airplane.Tests
             ac.Position.Y = 0;
             ac.ActualHeading = 90;
 
-            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+            ac.UpdateFrame();
 
             Assert.That(ac.Position.X, Is.GreaterThan(0));
             Assert.That(ac.Position.Y, Is.EqualTo(0));
@@ -82,7 +78,7 @@ namespace Airfield_Simulator.Core.Airplane.Tests
             ac.Position.Y = 0;
             ac.ActualHeading = 180;
 
-            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+            ac.UpdateFrame();
 
             Assert.That(ac.Position.X, Is.EqualTo(0));
             Assert.That(ac.Position.Y, Is.LessThan(0));
@@ -93,7 +89,7 @@ namespace Airfield_Simulator.Core.Airplane.Tests
             ac.Position.Y = 0;
             ac.ActualHeading = 270;
 
-            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+            ac.UpdateFrame();
 
             Assert.That(ac.Position.X, Is.LessThan(0));
             Assert.That(ac.Position.Y, Is.EqualTo(0));

@@ -20,11 +20,18 @@ namespace Airfield_Simulator
         public Task SimulationTask { get; set; }
         public Task DrawTask { get; set; }
 
-
+        private BackgroundWorker worker;
+        private bool running = false;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            worker = new BackgroundWorker()
+            {
+                WorkerSupportsCancellation = true
+            };
+            worker.DoWork += BackgroundWorkerDoWork;
 
             Bindings bindings = new Bindings();
 
@@ -40,11 +47,6 @@ namespace Airfield_Simulator
             }
 
             SimController.AirplaneManager.Collision += (o, e) => OnCollision();
-
-            canvas_draw.MouseMove += (o, args) =>
-            {
-                ShowMousePosition();
-            };
         }
 
         public void StartSimulation()
@@ -53,20 +55,12 @@ namespace Airfield_Simulator
             SimController.Init(SimProperties);
             SimController.Start();
 
-            DrawController.StartDrawLoop();
+            worker.RunWorkerAsync();
         }
 
         public void StopSimulation()
         {
-            SimController.Stop();
-            DrawController.StopDrawLoop();
-        }
-
-        private void ShowMousePosition()
-        {
-            Point p = Mouse.GetPosition(canvas_draw);
-
-            label_mouse.Content = string.Format("{0:0}",p.X) + ", " + string.Format("{0:0}", p.Y);
+            worker.CancelAsync();
         }
 
         private void button_start_simulation_Click(object sender, RoutedEventArgs e)
@@ -81,9 +75,16 @@ namespace Airfield_Simulator
 
         private void OnCollision()
         {
-            SimController.Stop();
+            StopSimulation();
             MessageBoxResult box = MessageBox.Show("Collision!");
-            
+        }
+
+        private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        {
+            while (!worker.CancellationPending)
+            {
+                FrameManager.UpdateFrame();
+            }
         }
     }
 }

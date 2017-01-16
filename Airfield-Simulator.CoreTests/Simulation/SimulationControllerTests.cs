@@ -17,7 +17,6 @@ namespace Airfield_Simulator.Core.Tests.Simulation
 
         SimulationController SimController;
         Mock<IAirplaneManager> ApManager;
-        Mock<ITimer> Timer;
         Mock<IFlightDirector> FlightDirector;
         Mock<ISimulationProperties> SimProperties;
         Mock<IAirplaneSpawner> AirplaneSpawner;
@@ -27,12 +26,11 @@ namespace Airfield_Simulator.Core.Tests.Simulation
         public void Initialize()
         {
             ApManager = new Mock<IAirplaneManager>();
-            Timer = new Mock<ITimer>();
             FlightDirector = new Mock<IFlightDirector>();
             AirplaneSpawner = new Mock<IAirplaneSpawner>();
             SimProperties = new Mock<ISimulationProperties>();
 
-            SimController = new SimulationController(Timer.Object, ApManager.Object, FlightDirector.Object, AirplaneSpawner.Object, SimProperties.Object);
+            SimController = new SimulationController(ApManager.Object, FlightDirector.Object, AirplaneSpawner.Object, SimProperties.Object);
         }
 
 
@@ -57,21 +55,17 @@ namespace Airfield_Simulator.Core.Tests.Simulation
         [Test]
         public void StartTest()
         {
-            Timer.Setup(t => t.Start()).Verifiable();
             SimController.Start();
 
             Assert.IsTrue(SimController.Running);
-            Timer.Verify();
         }
 
         [Test]
         public void StopTest()
         {
-            Timer.Setup(t => t.Stop()).Verifiable();
             SimController.Stop();
 
             Assert.IsFalse(SimController.Running);
-            Timer.Verify();
         }
     }
 }

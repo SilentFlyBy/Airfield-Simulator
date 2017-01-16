@@ -80,10 +80,10 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label>Mausposition:</Label>
-                    <Label Grid.Column="1" Name="label_mouse"></Label>
 
                     
+
+
                 </Grid>
             </GroupBox>
             <StackPanel Grid.Row="2" Orientation="Horizontal">

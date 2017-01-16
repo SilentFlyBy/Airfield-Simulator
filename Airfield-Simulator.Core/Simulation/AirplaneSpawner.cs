@@ -17,46 +17,26 @@ namespace Airfield_Simulator.Core.Simulation
         private const int SPAWN_HORIZON = 5500;
         private const int SPAWN_MAXIMUM = 10000;
 
-        private Timer spawnerTimer;
         private ISimulationProperties simulationProperties;
         private IAirplaneManager AirplaneManager;
         private Random random;
+        private double elapsedMilliSeconds = 0;
 
         public AirplaneSpawner(ISimulationProperties properties, IAirplaneManager manager)
         {
             this.simulationProperties = properties;
-            properties.PropertyChanged += OnPropertyChanged;
-
-            this.spawnerTimer = new Timer(2000);
-            spawnerTimer.Elapsed += OnTimerTick;
 
             this.AirplaneManager = manager;
+
+            FrameManager.AddUpdateObject(this);
 
             random = new Random();
         }
 
 
-        public void Start()
-        {
-            this.spawnerTimer.Start();
-        }
-
-        public void Stop()
-        {
-            this.spawnerTimer.Stop();
-        }
-
         private void OnTimerTick(object o, ElapsedEventArgs e)
         {
             SpawnAirplane();
-        }
-
-        private void OnPropertyChanged(object o, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "AircraftSpawnsPerSecond")
-                SetTimerInterval();
-            else if (e.PropertyName == "SimulationSpeed")
-                SetTimerInterval();
         }
 
         private void SpawnAirplane()
@@ -90,13 +70,14 @@ namespace Airfield_Simulator.Core.Simulation
                 AirplaneSpawn(this, new AirplaneSpawnEventArgs(aircraft));
         }
 
-        private void SetTimerInterval()
+        public void UpdateFrame()
         {
-            double interval = 
-                (60 / simulationProperties.AircraftSpawnsPerSecond * 1000) 
-                / simulationProperties.SimulationSpeed;
-
-            spawnerTimer.Interval = interval;
+            elapsedMilliSeconds += FrameManager.DeltaTime;
+            if(elapsedMilliSeconds >= 60 / simulationProperties.AircraftSpawnsPerMinute)
+            {
+                SpawnAirplane();
+                elapsedMilliSeconds = 0;
+            }
         }
     }
 }

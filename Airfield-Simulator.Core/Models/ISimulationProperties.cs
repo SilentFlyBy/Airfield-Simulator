@@ -11,7 +11,7 @@ namespace Airfield_Simulator.Core.Models
     {
         double SimulationSpeed { get; set; }
         int InstructionsPerMinute { get; set; }
-        int AircraftSpawnsPerSecond { get; set; }
+        int AircraftSpawnsPerMinute { get; set; }
 
         void Reset();
     }

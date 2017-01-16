@@ -19,18 +19,14 @@ namespace Airfield_Simulator.Core.Simulation
 
         public bool Running { get; private set; }
 
-        internal ITimer timer;
 
-
-        public SimulationController(ITimer timer, IAirplaneManager airplanemanager, IFlightDirector flightdirector, IAirplaneSpawner spawner, ISimulationProperties simprops)
+        public SimulationController(IAirplaneManager airplanemanager, IFlightDirector flightdirector, IAirplaneSpawner spawner, ISimulationProperties simprops)
         {
-            this.timer = timer;
             this.AirplaneManager = airplanemanager;
+
             this.FlightDirector = flightdirector;
             this.SimulationProperties = simprops;
             this.AirplaneSpawner = spawner;
-
-            this.timer.Tick += OnTimerTick;
         }
 
         private void OnTimerTick(object o, EventArgs e)
@@ -58,20 +54,12 @@ namespace Airfield_Simulator.Core.Simulation
 
         public void Start()
         {
-            timer.Start();
-            Running = true;
-
             this.FlightDirector.Start();
-            this.AirplaneSpawner.Start();
         }
 
         public void Stop()
         {
-            timer.Stop();
-            Running = false;
-
             this.FlightDirector.Stop();
-            this.AirplaneSpawner.Stop();
         }
     }
 }

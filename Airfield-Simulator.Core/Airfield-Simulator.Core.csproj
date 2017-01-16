@@ -55,6 +55,8 @@
     <Compile Include="FlightRoutes\Route.cs" />
     <Compile Include="FlightRoutes\RouteDestination.cs" />
     <Compile Include="FlightRoutes\Router.cs" />
+    <Compile Include="FrameManager.cs" />
+    <Compile Include="IUpdateFrame.cs" />
     <Compile Include="Models\ISimulationProperties.cs" />
     <Compile Include="Models\SimulationProperties.cs" />
     <Compile Include="Simulation\AirplaneManager.cs" />
@@ -69,7 +71,6 @@
     <Compile Include="Simulation\IAirplaneManager.cs" />
     <Compile Include="Simulation\IFlightDirector.cs" />
     <Compile Include="Simulation\ISimulationController.cs" />
-    <Compile Include="Simulation\ITimer.cs" />
     <Compile Include="Simulation\IWeatherController.cs" />
     <Compile Include="Simulation\SimulationController.cs" />
     <Compile Include="Airplane\AircraftType.cs" />
@@ -78,7 +79,6 @@
     <Compile Include="Airplane\Aircraft.cs" />
     <Compile Include="Models\GeoPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Simulation\SimulationTimer.cs" />
     <Compile Include="Simulation\WeatherController.cs" />
   </ItemGroup>
   <ItemGroup>

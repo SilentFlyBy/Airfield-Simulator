@@ -10,7 +10,7 @@ using System.Timers;
 
 namespace Airfield_Simulator.Core.Airplane
 {
-    public class Aircraft
+    public class Aircraft : IUpdateFrame
     {
         //https://de.wikipedia.org/wiki/Standardkurve
         public const int STANDARD_RATE_TURN = 3;
@@ -62,27 +62,18 @@ namespace Airfield_Simulator.Core.Airplane
 
         private TurnDirection TurnDirection;
 
-        private double intervals_per_second
+
+
+
+        public Aircraft(GeoPoint position, int heading, ISimulationProperties simprops)
         {
-            get
-            {
-                return 1000 / timer.Interval;
-            }
-        }
-
-        private ITimer timer;
-
-
-
-        public Aircraft(ITimer t, GeoPoint position, int heading, ISimulationProperties simprops)
-        {
-            timer = t;
             this.SimulationProperties = simprops;
 
-            t.Tick += (o, args) => { OnTick(); };
 
             Position = position;
             ActualHeading = heading;
+
+            FrameManager.AddUpdateObject(this);
         }
 
 
@@ -134,8 +125,7 @@ namespace Airfield_Simulator.Core.Airplane
 
         }
 
-
-        private void OnTick()
+        public void UpdateFrame()
         {
             Fly();
             Turn();
@@ -144,7 +134,7 @@ namespace Airfield_Simulator.Core.Airplane
 
         private void Fly()
         {
-            double traveled_distance = Speed / intervals_per_second;
+            double traveled_distance = Speed * FrameManager.DeltaTime;
 
             double bearing = ActualHeading * Math.PI / 180;
 
@@ -156,7 +146,7 @@ namespace Airfield_Simulator.Core.Airplane
         {
             if (ActualHeading - TargetHeading >= 1 || ActualHeading - TargetHeading <= -1)
             {
-                double tempheading = ActualHeading + (int)TurnDirection * (STANDARD_RATE_TURN / intervals_per_second) * SimulationProperties.SimulationSpeed;
+                double tempheading = ActualHeading + (int)TurnDirection * (STANDARD_RATE_TURN * FrameManager.DeltaTime) * SimulationProperties.SimulationSpeed;
                 if(tempheading < 0)
                 {
                     ActualHeading = 360 + tempheading;
@@ -189,12 +179,12 @@ namespace Airfield_Simulator.Core.Airplane
 
         private void Climb()
         {
-            ActualAltitude = ActualAltitude + ClimbRate / intervals_per_second;
+            ActualAltitude = ActualAltitude + ClimbRate * FrameManager.DeltaTime;
         }
 
         private void Descend()
         {
-            ActualAltitude = ActualAltitude - ClimbRate / intervals_per_second;
+            ActualAltitude = ActualAltitude - ClimbRate * FrameManager.DeltaTime;
         }
 
 

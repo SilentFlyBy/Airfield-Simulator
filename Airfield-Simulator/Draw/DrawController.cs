@@ -18,41 +18,28 @@ namespace Airfield_Simulator.GUI.Draw
 {
     public class DrawController : IDrawController
     {
-        public const double FRAMERATE = 60;
-
         public Dictionary<Aircraft, Image> AircraftImageList { get; set; }
         public double SimulationSpeed { get; set; }
         
-        private ITimer _drawTimer;
-        private ISimulationController _simController;
-        private Canvas _canvas;
+        private ISimulationController simController;
+        private Canvas canvas;
         private double ZoomFactor = 10;
 
 
-        public DrawController(ITimer timer, Canvas canvas, ISimulationController simcontroller)
+        public DrawController(Canvas canvas, ISimulationController simcontroller)
         {
-            this._canvas = canvas;
-            this._simController = simcontroller;
-            this._drawTimer = timer;
+            this.canvas = canvas;
+            this.simController = simcontroller;
 
             this.AircraftImageList = new Dictionary<Aircraft, Image>();
 
-            _drawTimer.Tick += (o, args) => { OnDrawTimerTick(); };
+            FrameManager.AddUpdateObject(this);
         }
 
-        public void StartDrawLoop()
-        {
-            _drawTimer.Start();
-        }
 
-        public void StopDrawLoop()
+        public void UpdateFrame()
         {
-            _drawTimer.Stop();
-        }
-
-        private void OnDrawTimerTick()
-        {
-            foreach(Aircraft currentaircraft in _simController.AirplaneManager.AircraftList.ToList())
+            foreach (Aircraft currentaircraft in simController.AirplaneManager.AircraftList.ToList())
             {
                 Image currentimage = null;
 
@@ -67,22 +54,29 @@ namespace Airfield_Simulator.GUI.Draw
                 double bottom = currentaircraft.Position.Y / ZoomFactor;
                 double left = currentaircraft.Position.X / ZoomFactor;
 
-                Canvas.SetBottom(currentimage, bottom + _canvas.ActualHeight/2);
-                Canvas.SetLeft(currentimage, left + _canvas.ActualWidth/2);
-                RotateTransform rotate = new RotateTransform(currentaircraft.ActualHeading, 25, 25);
-                currentimage.RenderTransform = rotate;
+                canvas.Dispatcher.Invoke(() =>
+                {
+                    Canvas.SetBottom(currentimage, bottom + canvas.ActualHeight / 2);
+                    Canvas.SetLeft(currentimage, left + canvas.ActualWidth / 2);
+                    RotateTransform rotate = new RotateTransform(currentaircraft.ActualHeading, 25, 25);
+                    currentimage.RenderTransform = rotate;
+                });
             }
         }
 
+
         private Image AddAircraft(Aircraft aircraft)
         {
-            Image image = new Image();
-            image.Source = new BitmapImage(new Uri("Resources/sep.png", UriKind.Relative));
+            return canvas.Dispatcher.Invoke(() =>
+            {
+                Image image = new Image();
+                image.Source = new BitmapImage(new Uri("Resources/sep.png", UriKind.Relative));
 
-            AircraftImageList.Add(aircraft, image);
-            _canvas.Children.Add(image);
+                AircraftImageList.Add(aircraft, image);
+                canvas.Children.Add(image);
 
-            return image;
+                return image;
+            });
         }
 
         private void removeAircraft(Aircraft aircraft)

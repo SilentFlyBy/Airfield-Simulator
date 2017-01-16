@@ -16,20 +16,15 @@ namespace Airfield_Simulator.Core.Tests.Simulation
     public class AirplaneManagerTests
     {
         AirplaneManager ApManager;
-        Mock<ITimer> Timer;
         Mock<ISimulationProperties> Simprops;
 
 
         [SetUp]
         public void Initialize()
         {
-            Timer = new Mock<ITimer>();
-            Timer.SetupAllProperties();
-            Timer.Object.Interval = 1;
-
             Simprops = new Mock<ISimulationProperties>();
 
-            ApManager = new AirplaneManager(Timer.Object, Simprops.Object);
+            ApManager = new AirplaneManager(Simprops.Object);
         }
 
 
@@ -73,7 +68,7 @@ namespace Airfield_Simulator.Core.Tests.Simulation
             ApManager.CreateAircraft(new GeoPoint(0, 0), 90);
             ApManager.CreateAircraft(new GeoPoint(40, 0), 270);
 
-            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+            ApManager.UpdateFrame();
 
             Assert.IsTrue(collisionEventFired);
 
@@ -87,7 +82,7 @@ namespace Airfield_Simulator.Core.Tests.Simulation
             ApManager.CreateAircraft(new GeoPoint(0, 0), 90);
             ApManager.CreateAircraft(new GeoPoint(201, 0), 270);
 
-            Timer.Raise(t => t.Tick += null, this, EventArgs.Empty);
+            ApManager.UpdateFrame();
 
             Assert.IsFalse(collisionEventFired);
 
