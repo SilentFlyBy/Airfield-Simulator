@@ -44,22 +44,7 @@ namespace Airfield_Simulator.Core.Simulation
 
         public void Reset()
         {
-            if(Running)
-            {
-                Stop();
-            }
-
             this.SimulationProperties.Reset();
-        }
-
-        public void Start()
-        {
-            this.FlightDirector.Start();
-        }
-
-        public void Stop()
-        {
-            this.FlightDirector.Stop();
         }
     }
 }

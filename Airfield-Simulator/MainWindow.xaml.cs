@@ -53,7 +53,6 @@ namespace Airfield_Simulator
         {
             canvas_draw.Children.Clear();
             SimController.Init(SimProperties);
-            SimController.Start();
 
             worker.RunWorkerAsync();
         }

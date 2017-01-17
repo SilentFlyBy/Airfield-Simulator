@@ -10,7 +10,7 @@ using System.Timers;
 
 namespace Airfield_Simulator.Core.Airplane
 {
-    public class Aircraft : IUpdateFrame
+    public class Aircraft : SimulationObject
     {
         //https://de.wikipedia.org/wiki/Standardkurve
         public const int STANDARD_RATE_TURN = 3;
@@ -39,7 +39,7 @@ namespace Airfield_Simulator.Core.Airplane
         public double ActualAltitude { get; private set; }
         public GeoPoint Position { get; private set; }
 
-        private double _speed = 90;
+        private double _speed = 1000;
         public double Speed
         {
             get
@@ -72,8 +72,6 @@ namespace Airfield_Simulator.Core.Airplane
 
             Position = position;
             ActualHeading = heading;
-
-            FrameManager.AddUpdateObject(this);
         }
 
 
@@ -125,7 +123,7 @@ namespace Airfield_Simulator.Core.Airplane
 
         }
 
-        public void UpdateFrame()
+        public override void BeforeUpdate()
         {
             Fly();
             Turn();

@@ -68,7 +68,7 @@ namespace Airfield_Simulator.Core.Tests.Simulation
             ApManager.CreateAircraft(new GeoPoint(0, 0), 90);
             ApManager.CreateAircraft(new GeoPoint(40, 0), 270);
 
-            ApManager.UpdateFrame();
+            ApManager.BeforeUpdate();
 
             Assert.IsTrue(collisionEventFired);
 
@@ -82,7 +82,7 @@ namespace Airfield_Simulator.Core.Tests.Simulation
             ApManager.CreateAircraft(new GeoPoint(0, 0), 90);
             ApManager.CreateAircraft(new GeoPoint(201, 0), 270);
 
-            ApManager.UpdateFrame();
+            ApManager.BeforeUpdate();
 
             Assert.IsFalse(collisionEventFired);
 

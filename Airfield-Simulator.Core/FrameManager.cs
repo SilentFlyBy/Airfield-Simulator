@@ -12,17 +12,17 @@ namespace Airfield_Simulator.Core
     {
         public static double DeltaTime { get; set; }
 
-        private static List<IUpdateFrame> UpdateObjects;
+        private static List<SimulationObject> UpdateObjects;
         private static Stopwatch stopWatch;
 
         static FrameManager()
         {
-            UpdateObjects = new List<IUpdateFrame>();
+            UpdateObjects = new List<SimulationObject>();
             stopWatch = new Stopwatch();
             DeltaTime = 0;
         }
 
-        public static void AddUpdateObject(IUpdateFrame update)
+        public static void AddUpdateObject(SimulationObject update)
         {
             UpdateObjects.Add(update);
         }
@@ -32,13 +32,23 @@ namespace Airfield_Simulator.Core
             stopWatch.Restart();
             lock (UpdateObjects)
             {
-                foreach (IUpdateFrame update in UpdateObjects.ToList())
+                foreach (SimulationObject update in UpdateObjects.ToList())
                 {
                     if (update != null)
-                        update.UpdateFrame();
+                        update.BeforeUpdate();
+                }
+                foreach (SimulationObject update in UpdateObjects.ToList())
+                {
+                    if (update != null)
+                        update.Update();
+                }
+                foreach (SimulationObject update in UpdateObjects.ToList())
+                {
+                    if (update != null)
+                        update.AfterUpdate();
                 }
             }
-            Thread.Sleep((int)(16 - DeltaTime));
+            Thread.Sleep((int)(5 - DeltaTime));
             
             stopWatch.Stop();
 

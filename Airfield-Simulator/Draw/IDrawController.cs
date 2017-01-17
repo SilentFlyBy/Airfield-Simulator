@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Airfield_Simulator.GUI.Draw
 {
-    public interface IDrawController : IUpdateFrame
+    public interface IDrawController
     {
     }
 }

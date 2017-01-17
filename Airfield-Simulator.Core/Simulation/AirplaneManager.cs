@@ -9,7 +9,7 @@ using Airfield_Simulator.Core.Airplane;
 
 namespace Airfield_Simulator.Core.Simulation
 {
-    public class AirplaneManager : IAirplaneManager, IUpdateFrame
+    public class AirplaneManager : SimulationObject, IAirplaneManager
     {
         public ISimulationProperties SimulationProperties { get; set; }
         public List<Aircraft> AircraftList { get; private set; }
@@ -21,12 +21,10 @@ namespace Airfield_Simulator.Core.Simulation
         {
             this.AircraftList = new List<Aircraft>();
             this.SimulationProperties = simprops;
-
-            FrameManager.AddUpdateObject(this);
         }
 
 
-        public void UpdateFrame()
+        public override void AfterUpdate()
         {
             CheckForCollision();
         }

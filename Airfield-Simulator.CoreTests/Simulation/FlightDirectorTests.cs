@@ -56,8 +56,6 @@ namespace Airfield_Simulator.CoreTests.Simulation
             simulationProperties.SetupSet(m => m.InstructionsPerMinute = It.IsAny<int>()).Raises(e => e.PropertyChanged += null, this, new PropertyChangedEventArgs("InstructionsPerMinute"));
             simulationProperties.SetupGet(m => m.InstructionsPerMinute).Returns(5);
             simulationProperties.Object.InstructionsPerMinute = 5;
-
-            Assert.That(flightDirector.InstructionsPerMinute, Is.EqualTo(5));
         }
     }
 }

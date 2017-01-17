@@ -51,21 +51,5 @@ namespace Airfield_Simulator.Core.Tests.Simulation
 
             Assert.That(!SimController.Running);
         }
-
-        [Test]
-        public void StartTest()
-        {
-            SimController.Start();
-
-            Assert.IsTrue(SimController.Running);
-        }
-
-        [Test]
-        public void StopTest()
-        {
-            SimController.Stop();
-
-            Assert.IsFalse(SimController.Running);
-        }
     }
 }
