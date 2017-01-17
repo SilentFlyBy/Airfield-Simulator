@@ -14,7 +14,5 @@ namespace Airfield_Simulator.Core.Simulation
 
 
         void Init(ISimulationProperties simprops);
-        void Start();
-        void Stop();
     }
 }

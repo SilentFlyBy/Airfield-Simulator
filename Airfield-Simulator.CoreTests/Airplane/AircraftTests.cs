@@ -56,7 +56,7 @@ namespace Airfield_Simulator.Core.Airplane.Tests
             ac.Position.Y = 0;
             ac.ActualHeading = 0;
 
-            ac.UpdateFrame();
+            ac.BeforeUpdate();
 
             Assert.That(ac.Position.X, Is.EqualTo(0));
             Assert.That(ac.Position.Y, Is.GreaterThan(0));
@@ -67,7 +67,7 @@ namespace Airfield_Simulator.Core.Airplane.Tests
             ac.Position.Y = 0;
             ac.ActualHeading = 90;
 
-            ac.UpdateFrame();
+            ac.BeforeUpdate();
 
             Assert.That(ac.Position.X, Is.GreaterThan(0));
             Assert.That(ac.Position.Y, Is.EqualTo(0));
@@ -78,7 +78,7 @@ namespace Airfield_Simulator.Core.Airplane.Tests
             ac.Position.Y = 0;
             ac.ActualHeading = 180;
 
-            ac.UpdateFrame();
+            ac.BeforeUpdate();
 
             Assert.That(ac.Position.X, Is.EqualTo(0));
             Assert.That(ac.Position.Y, Is.LessThan(0));
@@ -89,7 +89,7 @@ namespace Airfield_Simulator.Core.Airplane.Tests
             ac.Position.Y = 0;
             ac.ActualHeading = 270;
 
-            ac.UpdateFrame();
+            ac.BeforeUpdate();
 
             Assert.That(ac.Position.X, Is.LessThan(0));
             Assert.That(ac.Position.Y, Is.EqualTo(0));

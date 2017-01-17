@@ -10,7 +10,7 @@ using System.Timers;
 
 namespace Airfield_Simulator.Core.Simulation
 {
-    public class AirplaneSpawner : IAirplaneSpawner
+    public class AirplaneSpawner : SimulationObject, IAirplaneSpawner
     {
         public event AirplaneSpawnEventHandler AirplaneSpawn;
 
@@ -27,8 +27,6 @@ namespace Airfield_Simulator.Core.Simulation
             this.simulationProperties = properties;
 
             this.AirplaneManager = manager;
-
-            FrameManager.AddUpdateObject(this);
 
             random = new Random();
         }
@@ -70,7 +68,7 @@ namespace Airfield_Simulator.Core.Simulation
                 AirplaneSpawn(this, new AirplaneSpawnEventArgs(aircraft));
         }
 
-        public void UpdateFrame()
+        public override void AfterUpdate()
         {
             elapsedMilliSeconds += FrameManager.DeltaTime;
             if(elapsedMilliSeconds >= 60 / simulationProperties.AircraftSpawnsPerMinute)

@@ -56,9 +56,9 @@
     <Compile Include="FlightRoutes\RouteDestination.cs" />
     <Compile Include="FlightRoutes\Router.cs" />
     <Compile Include="FrameManager.cs" />
-    <Compile Include="IUpdateFrame.cs" />
     <Compile Include="Models\ISimulationProperties.cs" />
     <Compile Include="Models\SimulationProperties.cs" />
+    <Compile Include="SimulationObject.cs" />
     <Compile Include="Simulation\AirplaneManager.cs" />
     <Compile Include="Airplane\TurnDirection.cs" />
     <Compile Include="Simulation\AirplaneSpawner.cs" />

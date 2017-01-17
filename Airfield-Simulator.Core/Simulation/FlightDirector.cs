@@ -11,27 +11,11 @@ using System.Timers;
 
 namespace Airfield_Simulator.Core.Simulation
 {
-    public class FlightDirector : IFlightDirector
+    public class FlightDirector : SimulationObject, IFlightDirector
     {
-        private int instructionsPerMinute;
-        public int InstructionsPerMinute
-        {
-            get
-            {
-                return instructionsPerMinute;
-            }
-            private set
-            {
-                instructionsPerMinute = value;
-                this.timer.Interval = 60 / value * 1000;
-            }
-        }
-
-
         private ISimulationProperties simulationProperties;
         private IAirplaneManager airplaneManager;
         private IRouter router;
-        private Timer timer;
 
         private Dictionary<Aircraft, IRoute> AircraftRoutes { get; set; }
 
@@ -43,14 +27,7 @@ namespace Airfield_Simulator.Core.Simulation
             this.router = router;
             this.simulationProperties = simprops;
 
-            this.timer = new Timer();
-            this.timer.Elapsed += OnTimerTick;
-            this.simulationProperties.PropertyChanged += UpdateSimulationProperty;
-        }
-
-        private void OnTimerTick(object o, ElapsedEventArgs e)
-        {
-            //throw new NotImplementedException();
+            //FrameManager.AddUpdateObject(this);
         }
 
         public void Init()
@@ -58,21 +35,17 @@ namespace Airfield_Simulator.Core.Simulation
             throw new NotImplementedException();
         }
 
-        public void Start()
+        public override void AfterUpdate()
         {
-            this.timer.Start();
+            foreach(Aircraft a in airplaneManager.AircraftList)
+            {
+
+            }
         }
 
-        public void Stop()
+        private void IssueInstruction()
         {
-            this.timer.Stop();
-        }
-
-
-        private void UpdateSimulationProperty(object sender, PropertyChangedEventArgs e)
-        {
-            if(e.PropertyName == "InstructionsPerMinute")
-                InstructionsPerMinute = simulationProperties.InstructionsPerMinute;
+            throw new NotImplementedException();
         }
     }
 }

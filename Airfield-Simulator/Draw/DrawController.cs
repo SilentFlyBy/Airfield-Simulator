@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 
 namespace Airfield_Simulator.GUI.Draw
 {
-    public class DrawController : IDrawController
+    public class DrawController : SimulationObject, IDrawController
     {
         public Dictionary<Aircraft, Image> AircraftImageList { get; set; }
         public double SimulationSpeed { get; set; }
@@ -32,12 +32,10 @@ namespace Airfield_Simulator.GUI.Draw
             this.simController = simcontroller;
 
             this.AircraftImageList = new Dictionary<Aircraft, Image>();
-
-            FrameManager.AddUpdateObject(this);
         }
 
 
-        public void UpdateFrame()
+        public override void Update()
         {
             foreach (Aircraft currentaircraft in simController.AirplaneManager.AircraftList.ToList())
             {
