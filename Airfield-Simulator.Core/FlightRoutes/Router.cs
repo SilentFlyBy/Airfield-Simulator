@@ -91,10 +91,12 @@ namespace Airfield_Simulator.Core.FlightRoutes
             if(currentlocation.Y > 0)
             {
                 returnroute.Add(AirspaceWaypoints.DownwindNorth);
+                returnroute.Add(AirspaceWaypoints.TurnPointNorth27);
             }
             else
             {
                 returnroute.Add(AirspaceWaypoints.DownwindSouth);
+                returnroute.Add(AirspaceWaypoints.TurnPointSouth27);
             }
 
             returnroute.Add(AirspaceWaypoints.Final27);
@@ -110,10 +112,12 @@ namespace Airfield_Simulator.Core.FlightRoutes
             if (currentlocation.Y > 0)
             {
                 returnroute.Add(AirspaceWaypoints.DownwindNorth);
+                returnroute.Add(AirspaceWaypoints.TurnPointNorth09);
             }
             else
             {
                 returnroute.Add(AirspaceWaypoints.DownwindSouth);
+                returnroute.Add(AirspaceWaypoints.TurnPointSouth09);
             }
 
             returnroute.Add(AirspaceWaypoints.Final09);

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System;
+using System.Collections.Generic;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace Airfield_Simulator
 {
@@ -23,15 +26,22 @@ namespace Airfield_Simulator
         private BackgroundWorker worker;
         private bool running = false;
 
+        private List<int> fpsList;
+        private int fpsCount = 0;
+        private Image image_runway;
+
         public MainWindow()
         {
             InitializeComponent();
+            image_runway = new Image();
 
             worker = new BackgroundWorker()
             {
                 WorkerSupportsCancellation = true
             };
             worker.DoWork += BackgroundWorkerDoWork;
+
+            fpsList = new List<int>();
 
             Bindings bindings = new Bindings();
 
@@ -47,11 +57,28 @@ namespace Airfield_Simulator
             }
 
             SimController.AirplaneManager.Collision += (o, e) => OnCollision();
+
+            this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
+            this.SizeChanged += new SizeChangedEventHandler(Image_Runway_Loaded);
+        }
+
+        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            image_runway.Source = new BitmapImage(new Uri("Resources/airport_runway.jpg", UriKind.Relative));
+            image_runway.MaxWidth = 500;
+            image_runway.Loaded += new RoutedEventHandler(Image_Runway_Loaded);
+
+            canvas_draw.Children.Add(image_runway);
+        }
+
+        void Image_Runway_Loaded(object sender, RoutedEventArgs e)
+        {
+            Canvas.SetBottom(image_runway, (canvas_draw.ActualHeight / 2) - (image_runway.ActualHeight /2));
+            Canvas.SetLeft(image_runway, (canvas_draw.ActualWidth / 2) - (image_runway.ActualWidth /2));
         }
 
         public void StartSimulation()
         {
-            canvas_draw.Children.Clear();
             SimController.Init(SimProperties);
 
             worker.RunWorkerAsync();
@@ -83,6 +110,27 @@ namespace Airfield_Simulator
             while (!worker.CancellationPending)
             {
                 FrameManager.UpdateFrame();
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    if(fpsCount > 5)
+                    {
+                        int sum = 0;
+                        foreach(int i in fpsList)
+                        {
+                            sum += i;
+                        }
+                        label_fps.Content = sum / fpsList.Count;
+                        fpsList.Clear();
+                        fpsCount = 0;
+                    }
+                    else
+                    {
+                        fpsList.Add((int)(1 / FrameManager.DeltaTime));
+                        fpsCount++;
+                    }
+                });
+                
             }
         }
     }

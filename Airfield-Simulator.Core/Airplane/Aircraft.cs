@@ -13,7 +13,7 @@ namespace Airfield_Simulator.Core.Airplane
     public class Aircraft : SimulationObject
     {
         //https://de.wikipedia.org/wiki/Standardkurve
-        public const int STANDARD_RATE_TURN = 3;
+        public const int STANDARD_RATE_TURN = 10;
 
 
         public ISimulationProperties SimulationProperties { get; set; }
@@ -32,14 +32,14 @@ namespace Airfield_Simulator.Core.Airplane
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException("Value must be between 0 and 359");
+                    throw new ArgumentOutOfRangeException("Value must be between 0 and 360");
                 }
             }
         }
         public double ActualAltitude { get; private set; }
         public GeoPoint Position { get; private set; }
 
-        private double _speed = 1000;
+        private double _speed = 90;
         public double Speed
         {
             get
@@ -55,9 +55,9 @@ namespace Airfield_Simulator.Core.Airplane
         public AircraftType AircraftType { get; set; }
         public FlightRules FlightRules { get; set; }
         public string FlightNumber { get; set; }
+        public double TargetHeading { get; private set; }
 
 
-        private double TargetHeading;
         private double TargetAltitude;
 
         private TurnDirection TurnDirection;
@@ -85,7 +85,7 @@ namespace Airfield_Simulator.Core.Airplane
             }
             else
             {
-                throw new ArgumentOutOfRangeException("Value must be between 0 and 259");
+                throw new ArgumentOutOfRangeException("Value must be between 0 and 360");
             }
         }
 
@@ -142,14 +142,14 @@ namespace Airfield_Simulator.Core.Airplane
 
         private void Turn()
         {
-            if (ActualHeading - TargetHeading >= 1 || ActualHeading - TargetHeading <= -1)
+            if (ActualHeading - TargetHeading >= 0.2 || ActualHeading - TargetHeading <= -0.2)
             {
                 double tempheading = ActualHeading + (int)TurnDirection * (STANDARD_RATE_TURN * FrameManager.DeltaTime) * SimulationProperties.SimulationSpeed;
                 if(tempheading < 0)
                 {
                     ActualHeading = 360 + tempheading;
                 }
-                else if(tempheading > 359)
+                else if(tempheading >= 360)
                 {
                     ActualHeading = tempheading - 360;
                 }
@@ -188,7 +188,7 @@ namespace Airfield_Simulator.Core.Airplane
 
         private bool IsValidHeading(double d)
         {
-            if(d < 0 || d > 359)
+            if(d < 0 || d > 360)
             {
                 return false;
             }

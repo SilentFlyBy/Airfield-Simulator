@@ -24,7 +24,14 @@ namespace Airfield_Simulator.Core
 
         public static void AddUpdateObject(SimulationObject update)
         {
-            UpdateObjects.Add(update);
+            if(!UpdateObjects.Contains(update))
+                UpdateObjects.Add(update);
+        }
+
+        public static void RemoveUpdateObject(SimulationObject update)
+        {
+            if (!UpdateObjects.Contains(update))
+                UpdateObjects.Remove(update);
         }
 
         public static void UpdateFrame()
@@ -48,7 +55,7 @@ namespace Airfield_Simulator.Core
                         update.AfterUpdate();
                 }
             }
-            Thread.Sleep((int)(5 - DeltaTime));
+            Thread.Sleep(2);
             
             stopWatch.Stop();
 

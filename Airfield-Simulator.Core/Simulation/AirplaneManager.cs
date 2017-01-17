@@ -31,9 +31,11 @@ namespace Airfield_Simulator.Core.Simulation
 
         public Aircraft CreateAircraft(GeoPoint position, int heading)
         {
-            Aircraft ac = new Aircraft(position, heading,  SimulationProperties);
+            Aircraft ac = new Aircraft(position, heading, SimulationProperties);
+
 
             AircraftList.Add(ac);
+
             return ac;
         }
 
@@ -49,7 +51,7 @@ namespace Airfield_Simulator.Core.Simulation
 
         private void OnCollision(object sender, CollisionEventArgs e)
         {
-            if(this.Collision != null)
+            if (this.Collision != null)
             {
                 Collision(sender, e);
             }
@@ -65,7 +67,7 @@ namespace Airfield_Simulator.Core.Simulation
 
                     double distance = GeoPoint.GetDistance(ac.Position, ac2.Position);
 
-                    if (distance < 200)
+                    if (distance < 500)
                     {
                         OnCollision(ac, new CollisionEventArgs(ac2));
                     }

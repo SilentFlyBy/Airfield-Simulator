@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Airfield_Simulator.Core.Simulation
 {
-    public class WeatherController : IWeatherController
+    public class WeatherController : SimulationObject, IWeatherController
     {
         public int WindDegrees
         {
             get
             {
-                throw new NotImplementedException();
+                return 60;
             }
         }
     }

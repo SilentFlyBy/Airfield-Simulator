@@ -41,7 +41,7 @@ namespace Airfield_Simulator.Core.Models
             }
         }
 
-        private int aircraftSpawnsPerMinute = 5;
+        private int aircraftSpawnsPerMinute = 2;
         public int AircraftSpawnsPerMinute
         {
             get

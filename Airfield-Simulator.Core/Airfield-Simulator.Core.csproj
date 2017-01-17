@@ -56,9 +56,13 @@
     <Compile Include="FlightRoutes\RouteDestination.cs" />
     <Compile Include="FlightRoutes\Router.cs" />
     <Compile Include="FrameManager.cs" />
+    <Compile Include="Models\Instruction.cs" />
+    <Compile Include="Models\InstructionPriority.cs" />
     <Compile Include="Models\ISimulationProperties.cs" />
     <Compile Include="Models\SimulationProperties.cs" />
     <Compile Include="SimulationObject.cs" />
+    <Compile Include="Simulation\AircraftLandedEventHandler.cs" />
+    <Compile Include="Simulation\AircraftLandedEventArgs.cs" />
     <Compile Include="Simulation\AirplaneManager.cs" />
     <Compile Include="Airplane\TurnDirection.cs" />
     <Compile Include="Simulation\AirplaneSpawner.cs" />
@@ -80,6 +84,7 @@
     <Compile Include="Models\GeoPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simulation\WeatherController.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Exceptions\" />

@@ -12,6 +12,8 @@ namespace Airfield_Simulator.Core.Simulation
         IAirplaneManager AirplaneManager { get; }
         IFlightDirector FlightDirector { get; }
 
+        event AircraftLandedEventHandler AircraftLanded;
+
 
         void Init(ISimulationProperties simprops);
     }

@@ -32,8 +32,19 @@ namespace Airfield_Simulator.GUI.Draw
             this.simController = simcontroller;
 
             this.AircraftImageList = new Dictionary<Aircraft, Image>();
+
+            this.simController.AircraftLanded += new AircraftLandedEventHandler(SimController_Aircraft_Landed);
         }
 
+        private void SimController_Aircraft_Landed(object sender, AircraftLandedEventArgs e)
+        {
+            canvas.Dispatcher.Invoke(() =>
+            {
+                canvas.Children.Remove(AircraftImageList[e.Aircraft]);
+            });
+            
+            AircraftImageList.Remove(e.Aircraft);
+        }
 
         public override void Update()
         {
@@ -69,6 +80,7 @@ namespace Airfield_Simulator.GUI.Draw
             {
                 Image image = new Image();
                 image.Source = new BitmapImage(new Uri("Resources/sep.png", UriKind.Relative));
+                Canvas.SetZIndex(image, 20);
 
                 AircraftImageList.Add(aircraft, image);
                 canvas.Children.Add(image);

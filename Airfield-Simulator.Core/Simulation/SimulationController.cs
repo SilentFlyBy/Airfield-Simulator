@@ -17,6 +17,8 @@ namespace Airfield_Simulator.Core.Simulation
         public IFlightDirector FlightDirector { get; private set; }
         public IAirplaneSpawner AirplaneSpawner { get; private set; }
 
+        public event AircraftLandedEventHandler AircraftLanded;
+
         public bool Running { get; private set; }
 
 
@@ -27,11 +29,15 @@ namespace Airfield_Simulator.Core.Simulation
             this.FlightDirector = flightdirector;
             this.SimulationProperties = simprops;
             this.AirplaneSpawner = spawner;
+
+            this.FlightDirector.AircraftLanded += new AircraftLandedEventHandler(FlightDirector_Aircraft_Landed);
         }
 
-        private void OnTimerTick(object o, EventArgs e)
+        private void FlightDirector_Aircraft_Landed(object sender, AircraftLandedEventArgs e)
         {
-            
+            AirplaneManager.RemoveAircraft(e.Aircraft);
+            if (this.AircraftLanded != null)
+                AircraftLanded(this, e);
         }
 
         public void Init(ISimulationProperties simprops)

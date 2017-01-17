@@ -6,9 +6,5 @@ using System.Threading.Tasks;
 
 namespace Airfield_Simulator.Core.Simulation
 {
-    public interface IFlightDirector
-    {
-        event AircraftLandedEventHandler AircraftLanded;
-        void Init();
-    }
+    public delegate void AircraftLandedEventHandler(object sender, AircraftLandedEventArgs e);
 }

@@ -23,7 +23,7 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
-        <Grid Width="Auto">
+        <Grid Width="Auto" Panel.ZIndex="99">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="1*" />
@@ -81,7 +81,8 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    
+                    <Label Content="FPS"></Label>
+                    <Label Name="label_fps" Grid.Column="1"></Label>
 
 
                 </Grid>
@@ -91,11 +92,14 @@
                 <Button Name="button_start_simulation" Width="125" Margin="5" Click="button_start_simulation_Click" Background="#FF5FFF77" FontWeight="Bold" FontSize="22">Start</Button>
             </StackPanel>
         </Grid>
-        <Canvas Name="canvas_draw" Grid.Column="1">
-            <Canvas.Background>
-                <ImageBrush ImageSource="Resources/grass.jpg"/>
-            </Canvas.Background>
+        <Grid Grid.Column="1">
+            <Canvas Name="canvas_draw">
+                <Canvas.Background>
+                    <ImageBrush ImageSource="Resources/grass.jpg"/>
+                </Canvas.Background>
+            </Canvas>
 
-        </Canvas>
+        </Grid>
+
     </Grid>
 </Window>

@@ -29,13 +29,10 @@ namespace Airfield_Simulator.Core.Simulation
             this.AirplaneManager = manager;
 
             random = new Random();
-        }
 
-
-        private void OnTimerTick(object o, ElapsedEventArgs e)
-        {
             SpawnAirplane();
         }
+
 
         private void SpawnAirplane()
         {

@@ -14,6 +14,11 @@ namespace Airfield_Simulator.Core
             FrameManager.AddUpdateObject(this);
         }
 
+        ~SimulationObject()
+        {
+            FrameManager.RemoveUpdateObject(this);
+        }
+
 
         public virtual void BeforeUpdate()
         {
