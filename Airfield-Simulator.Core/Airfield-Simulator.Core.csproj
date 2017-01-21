@@ -77,9 +77,6 @@
     <Compile Include="Simulation\ISimulationController.cs" />
     <Compile Include="Simulation\IWeatherController.cs" />
     <Compile Include="Simulation\SimulationController.cs" />
-    <Compile Include="Airplane\AircraftType.cs" />
-    <Compile Include="Airplane\Airline.cs" />
-    <Compile Include="Airplane\FlightRules.cs" />
     <Compile Include="Airplane\Aircraft.cs" />
     <Compile Include="Models\GeoPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

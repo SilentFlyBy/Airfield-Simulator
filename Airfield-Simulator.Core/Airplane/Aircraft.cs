@@ -12,7 +12,6 @@ namespace Airfield_Simulator.Core.Airplane
 {
     public class Aircraft : SimulationObject
     {
-        //https://de.wikipedia.org/wiki/Standardkurve
         public const int STANDARD_RATE_TURN = 10;
 
 
@@ -36,7 +35,6 @@ namespace Airfield_Simulator.Core.Airplane
                 }
             }
         }
-        public double ActualAltitude { get; private set; }
         public GeoPoint Position { get; private set; }
 
         private double _speed = 90;
@@ -51,14 +49,8 @@ namespace Airfield_Simulator.Core.Airplane
                 _speed = value;
             }
         }
-        public double ClimbRate { get; private set; }
-        public AircraftType AircraftType { get; set; }
-        public FlightRules FlightRules { get; set; }
-        public string FlightNumber { get; set; }
+
         public double TargetHeading { get; private set; }
-
-
-        private double TargetAltitude;
 
         private TurnDirection TurnDirection;
 
@@ -103,31 +95,10 @@ namespace Airfield_Simulator.Core.Airplane
             }
         }
 
-        public void ChangeHeight(double new_height)
-        {
-            TargetAltitude = new_height;
-        }
-
-        public void TakeOff()
-        {
-
-        }
-
-        public void ClearToLand()
-        {
-
-        }
-
-        public void AbortLanding()
-        {
-
-        }
-
         public override void BeforeUpdate()
         {
             Fly();
             Turn();
-            ClimbOrDescend();
         }
 
         private void Fly()
@@ -158,31 +129,6 @@ namespace Airfield_Simulator.Core.Airplane
                     ActualHeading = tempheading;
                 }
             }
-        }
-
-        private void ClimbOrDescend()
-        {
-            if(ActualAltitude - TargetAltitude >= 10 || ActualAltitude - TargetAltitude <= 10)
-            {
-                if(TargetAltitude > ActualAltitude)
-                {
-                    Climb();
-                }
-                else
-                {
-                    Descend();
-                }
-            }
-        }
-
-        private void Climb()
-        {
-            ActualAltitude = ActualAltitude + ClimbRate * FrameDispatcher.DeltaTime;
-        }
-
-        private void Descend()
-        {
-            ActualAltitude = ActualAltitude - ClimbRate * FrameDispatcher.DeltaTime;
         }
 
 
