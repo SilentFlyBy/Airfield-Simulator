@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Data;
 
 namespace Airfield_Simulator
 {
@@ -42,6 +43,7 @@ namespace Airfield_Simulator
             worker.DoWork += BackgroundWorkerDoWork;
 
             fpsList = new List<int>();
+
 
             Bindings bindings = new Bindings();
 
@@ -109,7 +111,7 @@ namespace Airfield_Simulator
         {
             while (!worker.CancellationPending)
             {
-                FrameManager.UpdateFrame();
+                FrameDispatcher.UpdateFrame();
 
                 this.Dispatcher.Invoke(() =>
                 {
@@ -126,12 +128,18 @@ namespace Airfield_Simulator
                     }
                     else
                     {
-                        fpsList.Add((int)(1 / FrameManager.DeltaTime));
+                        fpsList.Add((int)(1 / FrameDispatcher.DeltaTime));
                         fpsCount++;
                     }
                 });
                 
             }
+        }
+
+        private void slider_simulation_speed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if(SimProperties != null)
+                SimProperties.SimulationSpeed = slider_simulation_speed.Value;
         }
     }
 }

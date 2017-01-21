@@ -21,7 +21,7 @@ namespace Airfield_Simulator.Core.Airplane.Tests
         public void Initialize()
         {
             ac = new Aircraft(new GeoPoint(5, 2), 0, new SimulationProperties() { SimulationSpeed = 2.8 });
-            FrameManager.DeltaTime = 1;
+            FrameDispatcher.DeltaTime = 1;
         }
 
         [Test]

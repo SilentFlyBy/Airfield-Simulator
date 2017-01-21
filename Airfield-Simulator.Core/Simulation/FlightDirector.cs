@@ -46,12 +46,12 @@ namespace Airfield_Simulator.Core.Simulation
 
         private void IssueInstructionIfPossible()
         {
-            if(timeSinceLastInstruction >= 60 / 60)
+            if(timeSinceLastInstruction >= 60 / (60 * simulationProperties.SimulationSpeed))
             {
                 IssueInstruction();
                 timeSinceLastInstruction = 0;
             }
-            timeSinceLastInstruction += FrameManager.DeltaTime;
+            timeSinceLastInstruction += FrameDispatcher.DeltaTime;
         }
 
         private void CheckAllAircraft()

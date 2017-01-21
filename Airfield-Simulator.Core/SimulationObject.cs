@@ -11,12 +11,12 @@ namespace Airfield_Simulator.Core
 
         public SimulationObject()
         {
-            FrameManager.AddUpdateObject(this);
+            FrameDispatcher.AddUpdateObject(this);
         }
 
         ~SimulationObject()
         {
-            FrameManager.RemoveUpdateObject(this);
+            FrameDispatcher.RemoveUpdateObject(this);
         }
 
 

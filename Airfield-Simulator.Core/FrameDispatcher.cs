@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Airfield_Simulator.Core
 {
-    public static class FrameManager
+    public static class FrameDispatcher
     {
         public static double DeltaTime { get; set; }
 
         private static List<SimulationObject> UpdateObjects;
         private static Stopwatch stopWatch;
 
-        static FrameManager()
+        static FrameDispatcher()
         {
             UpdateObjects = new List<SimulationObject>();
             stopWatch = new Stopwatch();

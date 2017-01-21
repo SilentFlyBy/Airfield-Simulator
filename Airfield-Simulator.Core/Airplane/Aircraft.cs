@@ -132,7 +132,7 @@ namespace Airfield_Simulator.Core.Airplane
 
         private void Fly()
         {
-            double traveled_distance = Speed * FrameManager.DeltaTime;
+            double traveled_distance = Speed * FrameDispatcher.DeltaTime;
 
             double bearing = ActualHeading * Math.PI / 180;
 
@@ -144,7 +144,7 @@ namespace Airfield_Simulator.Core.Airplane
         {
             if (ActualHeading - TargetHeading >= 0.2 || ActualHeading - TargetHeading <= -0.2)
             {
-                double tempheading = ActualHeading + (int)TurnDirection * (STANDARD_RATE_TURN * FrameManager.DeltaTime) * SimulationProperties.SimulationSpeed;
+                double tempheading = ActualHeading + (int)TurnDirection * (STANDARD_RATE_TURN * FrameDispatcher.DeltaTime) * SimulationProperties.SimulationSpeed;
                 if(tempheading < 0)
                 {
                     ActualHeading = 360 + tempheading;
@@ -177,12 +177,12 @@ namespace Airfield_Simulator.Core.Airplane
 
         private void Climb()
         {
-            ActualAltitude = ActualAltitude + ClimbRate * FrameManager.DeltaTime;
+            ActualAltitude = ActualAltitude + ClimbRate * FrameDispatcher.DeltaTime;
         }
 
         private void Descend()
         {
-            ActualAltitude = ActualAltitude - ClimbRate * FrameManager.DeltaTime;
+            ActualAltitude = ActualAltitude - ClimbRate * FrameDispatcher.DeltaTime;
         }
 
 

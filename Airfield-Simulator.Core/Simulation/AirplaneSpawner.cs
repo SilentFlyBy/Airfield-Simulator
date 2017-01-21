@@ -67,7 +67,7 @@ namespace Airfield_Simulator.Core.Simulation
 
         public override void AfterUpdate()
         {
-            elapsedMilliSeconds += FrameManager.DeltaTime;
+            elapsedMilliSeconds += FrameDispatcher.DeltaTime * simulationProperties.SimulationSpeed;
             if(elapsedMilliSeconds >= 60 / simulationProperties.AircraftSpawnsPerMinute)
             {
                 SpawnAirplane();

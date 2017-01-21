@@ -63,7 +63,7 @@
                     <Label Grid.Row="3">Simulationsgeschwindigkeit</Label>
                     <DockPanel Grid.Row="3" Grid.Column="1">
                         <Label x:Name="label_simulation_speed" Width="Auto" Content="{Binding ElementName=slider_simulation_speed, Path=Value}" ContentStringFormat="{}{0:#}x" />
-                        <Slider x:Name="slider_simulation_speed" VerticalAlignment="Center" Value="1" Maximum="3" Minimum="1" IsSnapToTickEnabled="True"></Slider>
+                        <Slider x:Name="slider_simulation_speed" VerticalAlignment="Center" Value="1" Maximum="3" Minimum="1" IsSnapToTickEnabled="True" ValueChanged="slider_simulation_speed_ValueChanged"></Slider>
                     </DockPanel>
                 </Grid>
             </GroupBox>
@@ -97,8 +97,8 @@
                 <Canvas.Background>
                     <ImageBrush ImageSource="Resources/grass.jpg"/>
                 </Canvas.Background>
-            </Canvas>
 
+            </Canvas>
         </Grid>
 
     </Grid>

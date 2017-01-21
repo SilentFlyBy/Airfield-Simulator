@@ -55,7 +55,7 @@
     <Compile Include="FlightRoutes\Route.cs" />
     <Compile Include="FlightRoutes\RouteDestination.cs" />
     <Compile Include="FlightRoutes\Router.cs" />
-    <Compile Include="FrameManager.cs" />
+    <Compile Include="FrameDispatcher.cs" />
     <Compile Include="Models\Instruction.cs" />
     <Compile Include="Models\InstructionPriority.cs" />
     <Compile Include="Models\ISimulationProperties.cs" />

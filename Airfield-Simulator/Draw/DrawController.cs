@@ -65,8 +65,8 @@ namespace Airfield_Simulator.GUI.Draw
 
                 canvas.Dispatcher.Invoke(() =>
                 {
-                    Canvas.SetBottom(currentimage, bottom + canvas.ActualHeight / 2);
-                    Canvas.SetLeft(currentimage, left + canvas.ActualWidth / 2);
+                    Canvas.SetBottom(currentimage, (bottom + canvas.ActualHeight / 2) - (currentimage.ActualHeight / 2));
+                    Canvas.SetLeft(currentimage, (left + canvas.ActualWidth / 2) - (currentimage.ActualWidth / 2));
                     RotateTransform rotate = new RotateTransform(currentaircraft.ActualHeading, 25, 25);
                     currentimage.RenderTransform = rotate;
                 });
