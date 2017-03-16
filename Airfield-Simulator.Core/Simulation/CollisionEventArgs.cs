@@ -9,11 +9,8 @@ namespace Airfield_Simulator.Core.Simulation
 {
     public class CollisionEventArgs : EventArgs
     {
-        public Aircraft CollidedAircraft { get; set; }
-
         public CollisionEventArgs(Aircraft collidedaircraft)
         {
-            this.CollidedAircraft = collidedaircraft;
         }
     }
 }

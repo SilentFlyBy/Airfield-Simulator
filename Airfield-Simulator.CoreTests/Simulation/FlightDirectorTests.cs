@@ -15,20 +15,20 @@ namespace Airfield_Simulator.CoreTests.Simulation
     [TestFixture]
     public class FlightDirectorTests
     {
-        private FlightDirector flightDirector;
-        private Mock<ISimulationProperties> simulationProperties;
-        private Mock<IAirplaneManager> airplaneManager;
-        private Mock<IRouter> router;
+        private FlightDirector _flightDirector;
+        private Mock<ISimulationProperties> _simulationProperties;
+        private Mock<IAirplaneManager> _airplaneManager;
+        private Mock<IRouter> _router;
 
 
         [SetUp]
         public void Init()
         {
-            this.simulationProperties = new Mock<ISimulationProperties>();
-            this.airplaneManager = new Mock<IAirplaneManager>();
-            this.router = new Mock<IRouter>();
+            _simulationProperties = new Mock<ISimulationProperties>();
+            _airplaneManager = new Mock<IAirplaneManager>();
+            _router = new Mock<IRouter>();
 
-            this.flightDirector = new FlightDirector(airplaneManager.Object, router.Object, simulationProperties.Object);
+            _flightDirector = new FlightDirector(_airplaneManager.Object, _router.Object, _simulationProperties.Object);
         }
 
 
@@ -53,9 +53,9 @@ namespace Airfield_Simulator.CoreTests.Simulation
         [Test]
         public void SimulationPropertyChangedTest()
         {
-            simulationProperties.SetupSet(m => m.InstructionsPerMinute = It.IsAny<int>()).Raises(e => e.PropertyChanged += null, this, new PropertyChangedEventArgs("InstructionsPerMinute"));
-            simulationProperties.SetupGet(m => m.InstructionsPerMinute).Returns(5);
-            simulationProperties.Object.InstructionsPerMinute = 5;
+            _simulationProperties.SetupSet(m => m.InstructionsPerMinute = It.IsAny<int>()).Raises(e => e.PropertyChanged += null, this, new PropertyChangedEventArgs("InstructionsPerMinute"));
+            _simulationProperties.SetupGet(m => m.InstructionsPerMinute).Returns(5);
+            _simulationProperties.Object.InstructionsPerMinute = 5;
         }
     }
 }

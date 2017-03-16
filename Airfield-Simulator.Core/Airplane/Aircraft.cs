@@ -1,65 +1,25 @@
-﻿using Airfield_Simulator.Core.Models;
-using Airfield_Simulator.Core.Simulation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
+﻿using System;
+using System.Windows.Forms;
+using Airfield_Simulator.Core.Models;
 
 namespace Airfield_Simulator.Core.Airplane
 {
     public class Aircraft : SimulationObject
     {
-        public const int STANDARD_RATE_TURN = 10;
-
-
-        public ISimulationProperties SimulationProperties { get; set; }
-        private double actualHeading;
-        public double ActualHeading
-        {
-            get
-            {
-                return actualHeading;
-            }
-            set
-            {
-                if(IsValidHeading(value))
-                {
-                    actualHeading = value;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException("Value must be between 0 and 360");
-                }
-            }
-        }
-        public GeoPoint Position { get; private set; }
-
-        private double _speed = 90;
-        public double Speed
-        {
-            get
-            {
-                return _speed * SimulationProperties.SimulationSpeed;
-            }
-            set
-            {
-                _speed = value;
-            }
-        }
-
+        public ISimulationProperties SimulationProperties { get; }
+        public GeoPoint Position { get; }
         public double TargetHeading { get; private set; }
 
-        private TurnDirection TurnDirection;
-
-
+        private double TrueSpeed => Speed * SimulationProperties.SimulationSpeed;
+        private const int StandardRateTurn = 30;
+        private double Speed => SimulationProperties.AircraftSpeed;
+        private double _actualHeading;
+        private TurnDirection _turnDirection;
 
 
         public Aircraft(GeoPoint position, int heading, ISimulationProperties simprops)
         {
-            this.SimulationProperties = simprops;
+            SimulationProperties = simprops;
 
 
             Position = position;
@@ -67,31 +27,48 @@ namespace Airfield_Simulator.Core.Airplane
         }
 
 
-        public void TurnLeft(double new_heading)
-        {
-            TurnDirection = TurnDirection.Left;
 
-            if (IsValidHeading(new_heading))
+        public double ActualHeading
+        {
+            get { return _actualHeading; }
+            set
             {
-                TargetHeading = new_heading;
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("Value must be between 0 and 360");
+                if (IsValidHeading(value))
+                {
+                    _actualHeading = value;
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), "Value must be between 0 and 360");
+                }
             }
         }
 
-        public void TurnRight(double new_heading)
+        public void TurnLeft(double newHeading)
         {
-            TurnDirection = TurnDirection.Right;
+            _turnDirection = TurnDirection.Left;
 
-            if(IsValidHeading(new_heading))
+            if (IsValidHeading(newHeading))
             {
-                TargetHeading = new_heading;
+                TargetHeading = newHeading;
             }
             else
             {
-                throw new ArgumentOutOfRangeException("Value must be between 0 and 259");
+                throw new ArgumentOutOfRangeException(nameof(newHeading), "Value must be between 0 and 360");
+            }
+        }
+
+        public void TurnRight(double newHeading)
+        {
+            _turnDirection = TurnDirection.Right;
+
+            if (IsValidHeading(newHeading))
+            {
+                TargetHeading = newHeading;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException(nameof(newHeading), "Value must be between 0 and 259");
             }
         }
 
@@ -103,45 +80,40 @@ namespace Airfield_Simulator.Core.Airplane
 
         private void Fly()
         {
-            double traveled_distance = Speed * FrameDispatcher.DeltaTime;
+            var traveledDistance = TrueSpeed*FrameDispatcher.DeltaTime;
 
-            double bearing = ActualHeading * Math.PI / 180;
+            var bearing = ActualHeading*Math.PI/180;
 
-            Position.Y = Math.Round(Position.Y + traveled_distance * Math.Cos(bearing), 5);
-            Position.X = Math.Round(Position.X + traveled_distance * Math.Sin(bearing), 5);
+            Position.Y = Math.Round(Position.Y + traveledDistance*Math.Cos(bearing), 5);
+            Position.X = Math.Round(Position.X + traveledDistance*Math.Sin(bearing), 5);
         }
 
         private void Turn()
         {
-            if (ActualHeading - TargetHeading >= 0.2 || ActualHeading - TargetHeading <= -0.2)
+            if (!(ActualHeading - TargetHeading >= 0.2) && !(ActualHeading - TargetHeading <= -0.2))
+                return;
+
+            var tempheading = ActualHeading +
+                              (int) _turnDirection*(StandardRateTurn*FrameDispatcher.DeltaTime)*
+                              SimulationProperties.SimulationSpeed;
+            if (tempheading < 0)
             {
-                double tempheading = ActualHeading + (int)TurnDirection * (STANDARD_RATE_TURN * FrameDispatcher.DeltaTime) * SimulationProperties.SimulationSpeed;
-                if(tempheading < 0)
-                {
-                    ActualHeading = 360 + tempheading;
-                }
-                else if(tempheading >= 360)
-                {
-                    ActualHeading = tempheading - 360;
-                }
-                else
-                {
-                    ActualHeading = tempheading;
-                }
+                ActualHeading = 360 + tempheading;
+            }
+            else if (tempheading >= 360)
+            {
+                ActualHeading = tempheading - 360;
+            }
+            else
+            {
+                ActualHeading = tempheading;
             }
         }
 
 
-        private bool IsValidHeading(double d)
+        private static bool IsValidHeading(double d)
         {
-            if(d < 0 || d > 360)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return (d >= 0) && (d < 360);
         }
     }
 }

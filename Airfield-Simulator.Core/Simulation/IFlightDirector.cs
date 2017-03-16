@@ -9,6 +9,5 @@ namespace Airfield_Simulator.Core.Simulation
     public interface IFlightDirector
     {
         event AircraftLandedEventHandler AircraftLanded;
-        void Init();
     }
 }

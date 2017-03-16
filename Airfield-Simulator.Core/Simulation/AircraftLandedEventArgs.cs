@@ -13,7 +13,7 @@ namespace Airfield_Simulator.Core.Simulation
 
         public AircraftLandedEventArgs(Aircraft ac)
         {
-            this.Aircraft = ac;
+            Aircraft = ac;
         }
     }
 }

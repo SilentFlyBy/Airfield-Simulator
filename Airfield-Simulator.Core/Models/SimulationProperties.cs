@@ -12,61 +12,68 @@ namespace Airfield_Simulator.Core.Models
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        private double simulationSpeed;
+        private double _simulationSpeed;
         public double SimulationSpeed
         {
             get
             {
-                return simulationSpeed;
+                return _simulationSpeed;
             }
             set
             {
-                simulationSpeed = value;
+                _simulationSpeed = value;
                 NotifyPropertyChanged("SimulationSpeed");
             }
         }
 
-        private int instructionsPerMinute;
+        private int _instructionsPerMinute;
         public int InstructionsPerMinute
         {
             get
             {
-                return instructionsPerMinute;
+                return _instructionsPerMinute;
             }
 
             set
             {
-                instructionsPerMinute = value;
+                _instructionsPerMinute = value;
                 NotifyPropertyChanged("InstructionsPerMinute");
             }
         }
 
-        private int aircraftSpawnsPerMinute = 2;
+        private int _aircraftSpawnsPerMinute;
         public int AircraftSpawnsPerMinute
         {
             get
             {
-                return aircraftSpawnsPerMinute;
+                return _aircraftSpawnsPerMinute;
             }
 
             set
             {
-                aircraftSpawnsPerMinute = value;
+                _aircraftSpawnsPerMinute = value;
                 NotifyPropertyChanged("AircraftSpawnsPerMinute");
             }
         }
 
-        public void Reset()
+        private int _aircraftSpeed;
+        public int AircraftSpeed
         {
-            throw new NotImplementedException();
+            get
+            {
+                return _aircraftSpeed;
+            }
+
+            set
+            {
+                _aircraftSpeed = value;
+                NotifyPropertyChanged("AircraftSpeed");
+            }
         }
 
         private void NotifyPropertyChanged(string prop)
         {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(prop));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

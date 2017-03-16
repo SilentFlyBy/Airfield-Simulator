@@ -47,9 +47,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\RandomExtensions.cs" />
     <Compile Include="FlightRoutes\AirspaceWaypoints.cs" />
-    <Compile Include="FlightRoutes\ArrivalRoute.cs" />
-    <Compile Include="FlightRoutes\DepartureRoute.cs" />
     <Compile Include="FlightRoutes\IRoute.cs" />
     <Compile Include="FlightRoutes\IRouter.cs" />
     <Compile Include="FlightRoutes\Route.cs" />
@@ -57,7 +56,6 @@
     <Compile Include="FlightRoutes\Router.cs" />
     <Compile Include="FrameDispatcher.cs" />
     <Compile Include="Models\Instruction.cs" />
-    <Compile Include="Models\InstructionPriority.cs" />
     <Compile Include="Models\ISimulationProperties.cs" />
     <Compile Include="Models\SimulationProperties.cs" />
     <Compile Include="SimulationObject.cs" />
@@ -83,9 +81,7 @@
     <Compile Include="Simulation\WeatherController.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config">
       <SubType>Designer</SubType>

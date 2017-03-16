@@ -28,31 +28,31 @@ namespace Airfield_Simulator.Core.Models
             return GetHeading(this, point);
         }
 
-        public static double GetDistance(GeoPoint point_a, GeoPoint point_b)
+        public static double GetDistance(GeoPoint pointA, GeoPoint pointB)
         {
-            return Math.Round(Math.Sqrt(Math.Pow((point_b.X - point_a.X), 2)+ Math.Pow((point_b.Y - point_a.Y), 2)), 1);
+            return Math.Round(Math.Sqrt(Math.Pow((pointB.X - pointA.X), 2)+ Math.Pow((pointB.Y - pointA.Y), 2)), 1);
         }
 
-        public static double GetHeading(GeoPoint point_a, GeoPoint point_b)
+        public static double GetHeading(GeoPoint pointA, GeoPoint pointB)
         {
-            double a = point_a.X - point_b.X;
-            double b = point_a.Y - point_b.Y;
+            var a = pointA.X - pointB.X;
+            var b = pointA.Y - pointB.Y;
 
-            double c = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
-            double q = Math.Pow(a, 2) / c;
-            double p = c - q;
-            double h = Math.Sqrt(p * q);
-            double alpha = Math.Atan(h / p);
+            var c = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+            var q = Math.Pow(a, 2) / c;
+            var p = c - q;
+            var h = Math.Sqrt(p * q);
+            var alpha = Math.Atan(h / p);
 
-            double degrees = alpha * (360 / (2 * Math.PI));
+            var degrees = alpha * (360 / (2 * Math.PI));
 
-            if (point_a.X < point_b.X && point_a.Y < point_b.Y)
+            if (pointA.X < pointB.X && pointA.Y < pointB.Y)
                 return degrees;
 
-            else if (point_a.X > point_b.X && point_a.Y < point_b.Y)
+            else if (pointA.X > pointB.X && pointA.Y < pointB.Y)
                 return 360 - degrees;
 
-            else if (point_a.X > point_b.X && point_a.Y > point_b.Y)
+            else if (pointA.X > pointB.X && pointA.Y > pointB.Y)
                 return 180 + degrees;
 
             else

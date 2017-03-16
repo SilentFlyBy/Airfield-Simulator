@@ -8,8 +8,7 @@ namespace Airfield_Simulator.Core
 {
     public abstract class SimulationObject
     {
-
-        public SimulationObject()
+        protected SimulationObject()
         {
             FrameDispatcher.AddUpdateObject(this);
         }

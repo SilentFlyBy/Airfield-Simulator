@@ -47,24 +47,28 @@
                     </Grid.RowDefinitions>
                     <Label>Anweisungen pro Minute:</Label>
                     <DockPanel Grid.Column="1">
-                        <Label x:Name="label_instructions_per_minute" Width="Auto" Content="{Binding ElementName=slider_instructions_per_minute, Path=Value}" ContentStringFormat="{}{0:#}" />
-                        <Slider x:Name="slider_instructions_per_minute" VerticalAlignment="Center" Maximum="60" Value="20" Minimum="1" IsSnapToTickEnabled="True"></Slider>
+                        <Label x:Name="LabelInstructionsPerMinute" Width="Auto" Content="{Binding ElementName=SliderInstructionsPerMinute, Path=Value}" ContentStringFormat="{}{0:#}" />
+                        <Slider x:Name="SliderInstructionsPerMinute" VerticalAlignment="Center" Maximum="60" Value="60" Minimum="1" IsSnapToTickEnabled="True" ValueChanged="SliderInstructionsPerMinute_ValueChanged" />
                     </DockPanel>
 
                     <Label Grid.Row="1">Flugverkehrsaufkommen:</Label>
-                    <ComboBox Grid.Row="1" Grid.Column="1" Name="combobox_traffic"></ComboBox>
+                    <DockPanel Grid.Row="1" Grid.Column="1">
+                        <Label x:Name="LabelAircraftPerMinute" Width="Auto" Content="{Binding ElementName=SliderAircraftPerMinute, Path=Value}"></Label>
+                        <Slider x:Name="SliderAircraftPerMinute" VerticalAlignment="Center" Maximum="10" Value="2" Minimum="1" IsSnapToTickEnabled="True" ValueChanged="SliderAircraftPerMinute_ValueChanged"></Slider>
+                    </DockPanel>
 
-                    <Label Grid.Row="2">Pilotenskills</Label>
+                    <Label Grid.Row="2">Flugzeuggeschwindigkeit:</Label>
                     <DockPanel Grid.Row="2" Grid.Column="1">
-                        <Label x:Name="label_pilot_skills" Width="Auto" Content="{Binding ElementName=slider_pilot_skills, Path=Value}" ContentStringFormat="{}{0:#}%" />
-                        <Slider x:Name="slider_pilot_skills" VerticalAlignment="Center" Maximum="100" Value="75" Minimum="1" IsSnapToTickEnabled="True"></Slider>
+                        <Label x:Name="LabelAircraftSpeed" Width="Auto" Content="{Binding ElementName=SliderAircraftSpeed, Path=Value}"></Label>
+                        <Slider x:Name="SliderAircraftSpeed" VerticalAlignment="Center" Maximum="600" Value="270" Minimum="90" IsSnapToTickEnabled="True" ValueChanged="SliderAircraftSpeed_ValueChanged"></Slider>
                     </DockPanel>
 
                     <Label Grid.Row="3">Simulationsgeschwindigkeit</Label>
                     <DockPanel Grid.Row="3" Grid.Column="1">
-                        <Label x:Name="label_simulation_speed" Width="Auto" Content="{Binding ElementName=slider_simulation_speed, Path=Value}" ContentStringFormat="{}{0:#}x" />
-                        <Slider x:Name="slider_simulation_speed" VerticalAlignment="Center" Value="1" Maximum="3" Minimum="1" IsSnapToTickEnabled="True" ValueChanged="slider_simulation_speed_ValueChanged"></Slider>
+                        <Label x:Name="LabelSimulationSpeed" Width="Auto" Content="{Binding ElementName=SliderSimulationSpeed, Path=Value}" ContentStringFormat="{}{0:#}x" />
+                        <Slider x:Name="SliderSimulationSpeed" VerticalAlignment="Center" Value="1" Maximum="3" Minimum="1" IsSnapToTickEnabled="True" ValueChanged="slider_simulation_speed_ValueChanged" />
                     </DockPanel>
+
                 </Grid>
             </GroupBox>
             <GroupBox Grid.Row="1" Margin="1,5,1,1">
@@ -79,21 +83,34 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <Label Content="FPS"></Label>
-                    <Label Name="label_fps" Grid.Column="1"></Label>
+                    <Label Content="FPS" />
+                    <Label Name="LabelFps" Grid.Column="1" Content="0" />
 
+                    <Label Content="Zeit" Grid.Row="1" />
+                    <Label Name="LabelTime" Grid.Row="1" Grid.Column="1" Content="0" />
+
+                    <Label Content="Flugzeuge" Grid.Row="2" />
+                    <Label Name="LabelAircraftCount" Grid.Row="2" Grid.Column="1" Content="0" />
+
+                    <Label Content="Gelandete Flugzeuge" Grid.Row="3" />
+                    <Label Name="LabelLandedAircraftCount" Grid.Row="3" Grid.Column="1" Content="0" />
+
+                    <Label Content="Windrichtung" Grid.Row="4" />
+                    <Label Name="LabelWind" Grid.Row="4" Grid.Column="1" Content="0" />
 
                 </Grid>
             </GroupBox>
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Button Name="button_stop_simulation" Width="125" Margin="5" Click="button_stop_simulation_Click" Background="#FFFF7979" FontWeight="Bold" FontSize="22">Stop</Button>
-                <Button Name="button_start_simulation" Width="125" Margin="5" Click="button_start_simulation_Click" Background="#FF5FFF77" FontWeight="Bold" FontSize="22">Start</Button>
+                <Button Name="ButtonStartSimulation" Width="125" Margin="5" Click="button_start_simulation_Click" Background="#FF5FFF77" FontWeight="Bold" FontSize="22">Start</Button>
             </StackPanel>
         </Grid>
         <Grid Grid.Column="1">
-            <Canvas Name="canvas_draw">
+            <Canvas Name="CanvasDraw">
                 <Canvas.Background>
                     <ImageBrush ImageSource="Resources/grass.jpg"/>
                 </Canvas.Background>
@@ -103,3 +120,66 @@
 
     </Grid>
 </Window>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -12,20 +12,13 @@ namespace Airfield_Simulator.Core.Models.Tests
     [TestFixture()]
     public class SimulationPropertiesTests
     {
-        private SimulationProperties simulationProperties;
+        private SimulationProperties _simulationProperties;
 
 
         [SetUp]
         public void Init()
         {
-            simulationProperties = new SimulationProperties();
-        }
-
-
-        [Test()]
-        public void ResetTest()
-        {
-            Assert.Fail();
+            _simulationProperties = new SimulationProperties();
         }
 
         [Test]
@@ -36,13 +29,13 @@ namespace Airfield_Simulator.Core.Models.Tests
             {
                 bool eventraised = false;
                 string eventPropertyName = null;
-                simulationProperties.PropertyChanged += (sender, e) => 
+                _simulationProperties.PropertyChanged += (sender, e) => 
                 {
                     eventraised = true;
                     eventPropertyName = e.PropertyName;
                 };
 
-                property.SetValue(simulationProperties, null);
+                property.SetValue(_simulationProperties, null);
 
                 Assert.IsTrue(eventraised);
                 Assert.That(eventPropertyName, Is.EqualTo(property.Name));

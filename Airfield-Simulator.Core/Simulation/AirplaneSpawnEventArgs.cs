@@ -9,11 +9,8 @@ namespace Airfield_Simulator.Core.Simulation
 {
     public class AirplaneSpawnEventArgs : EventArgs
     {
-        public Aircraft SpawnedAircraft { get; set; }
-
         public AirplaneSpawnEventArgs(Aircraft aircraft)
         {
-            this.SpawnedAircraft = aircraft;
         }
     }
 }

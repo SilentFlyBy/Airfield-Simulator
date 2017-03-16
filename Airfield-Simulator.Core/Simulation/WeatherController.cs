@@ -2,18 +2,46 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
+using Airfield_Simulator.Core.Extensions;
 
 namespace Airfield_Simulator.Core.Simulation
 {
     public class WeatherController : SimulationObject, IWeatherController
     {
+        private int _windDegrees;
+
         public int WindDegrees
         {
-            get
+            get { return _windDegrees; }
+            private set
             {
-                return 60;
+                if (value < 0)
+                {
+                    _windDegrees = 360 + value;
+                }
+                else if (value > 360)
+                {
+                    _windDegrees = 360 - value;
+                }
+                else
+                {
+                    _windDegrees = value;
+                }
             }
+        }
+
+        private readonly Random _random;
+
+        public WeatherController()
+        {
+            _random = new Random();
+        }
+
+        public override void BeforeUpdate()
+        {
+            var r = _random.NextGaussian();
+            WindDegrees += (int)(r);
         }
     }
 }

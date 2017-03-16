@@ -11,16 +11,17 @@ namespace Airfield_Simulator.Core.Simulation
 {
     public class AirplaneManager : SimulationObject, IAirplaneManager
     {
-        public ISimulationProperties SimulationProperties { get; set; }
         public List<Aircraft> AircraftList { get; private set; }
-
         public event CollisionEventHandler Collision;
+
+        private ISimulationProperties SimulationProperties { get; set; }
+
 
 
         public AirplaneManager(ISimulationProperties simprops)
         {
-            this.AircraftList = new List<Aircraft>();
-            this.SimulationProperties = simprops;
+            AircraftList = new List<Aircraft>();
+            SimulationProperties = simprops;
         }
 
 
@@ -31,9 +32,7 @@ namespace Airfield_Simulator.Core.Simulation
 
         public Aircraft CreateAircraft(GeoPoint position, int heading)
         {
-            Aircraft ac = new Aircraft(position, heading, SimulationProperties);
-
-
+            var ac = new Aircraft(position, heading, SimulationProperties);
             AircraftList.Add(ac);
 
             return ac;
@@ -51,21 +50,18 @@ namespace Airfield_Simulator.Core.Simulation
 
         private void OnCollision(object sender, CollisionEventArgs e)
         {
-            if (this.Collision != null)
-            {
-                Collision(sender, e);
-            }
+            Collision?.Invoke(sender, e);
         }
 
         private void CheckForCollision()
         {
-            foreach (Aircraft ac in AircraftList.ToList())
+            foreach (var ac in AircraftList.ToList())
             {
-                foreach (Aircraft ac2 in AircraftList.ToList())
+                foreach (var ac2 in AircraftList.ToList())
                 {
                     if (ac == ac2) break;
 
-                    double distance = GeoPoint.GetDistance(ac.Position, ac2.Position);
+                    var distance = GeoPoint.GetDistance(ac.Position, ac2.Position);
 
                     if (distance < 500)
                     {

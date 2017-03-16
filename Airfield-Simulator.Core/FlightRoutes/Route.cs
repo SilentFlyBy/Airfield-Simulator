@@ -10,104 +10,86 @@ namespace Airfield_Simulator.Core.FlightRoutes
 {
     public class Route : IRoute
     {
-        private List<GeoPoint>  waypoints { get; set; }
-        private int currentWaypointindex = 0;
+        private List<GeoPoint>  Waypoints { get; }
+        private int _currentWaypointindex;
 
         public Route()
         {
-            this.waypoints = new List<GeoPoint>();
+            Waypoints = new List<GeoPoint>();
         }
 
         public GeoPoint this[int index]
         {
             get
             {
-                return this.waypoints[index];
+                return Waypoints[index];
             }
 
             set
             {
-                this.waypoints[index] = value;
+                Waypoints[index] = value;
             }
         }
 
-        public int Count
-        {
-            get
-            {
-                return this.waypoints.Count;
-            }
-        }
+        public int Count => Waypoints.Count;
 
-        public bool IsReadOnly
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsReadOnly => true;
 
-        public GeoPoint CurrentWaypoint
-        {
-            get
-            {
-                return this.waypoints[currentWaypointindex];
-            }
-        }
+        public GeoPoint CurrentWaypoint => Waypoints[_currentWaypointindex];
 
         public void Add(GeoPoint item)
         {
-            this.waypoints.Add(item);
+            Waypoints.Add(item);
         }
 
         public void Clear()
         {
-            this.waypoints.Clear();
+            Waypoints.Clear();
         }
 
         public bool Contains(GeoPoint item)
         {
-            return this.waypoints.Contains(item);
+            return Waypoints.Contains(item);
         }
 
         public void CopyTo(GeoPoint[] array, int arrayIndex)
         {
-            this.waypoints.CopyTo(array, arrayIndex);
+            Waypoints.CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<GeoPoint> GetEnumerator()
         {
-            return this.waypoints.GetEnumerator();
+            return Waypoints.GetEnumerator();
         }
 
         public int IndexOf(GeoPoint item)
         {
-            return this.waypoints.IndexOf(item);
+            return Waypoints.IndexOf(item);
         }
 
         public void Insert(int index, GeoPoint item)
         {
-            this.waypoints.Insert(index, item);
+            Waypoints.Insert(index, item);
         }
 
         public bool Remove(GeoPoint item)
         {
-            return this.waypoints.Remove(item);
+            return Waypoints.Remove(item);
         }
 
         public void RemoveAt(int index)
         {
-            this.waypoints.RemoveAt(index);
+            Waypoints.RemoveAt(index);
         }
 
         public void TargetNextWaypoint()
         {
-            currentWaypointindex++;
+            _currentWaypointindex++;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.waypoints.GetEnumerator();
+            return Waypoints.GetEnumerator();
         }
     }
 }

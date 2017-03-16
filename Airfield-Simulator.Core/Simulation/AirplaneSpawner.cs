@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using Airfield_Simulator.Core.Extensions;
 
 namespace Airfield_Simulator.Core.Simulation
 {
@@ -14,65 +15,57 @@ namespace Airfield_Simulator.Core.Simulation
     {
         public event AirplaneSpawnEventHandler AirplaneSpawn;
 
-        private const int SPAWN_HORIZON = 5500;
-        private const int SPAWN_MAXIMUM = 10000;
+        private const int SpawnHorizon = 5500;
 
-        private ISimulationProperties simulationProperties;
-        private IAirplaneManager AirplaneManager;
-        private Random random;
-        private double elapsedMilliSeconds = 0;
+        private readonly ISimulationProperties _simulationProperties;
+        private readonly IAirplaneManager _airplaneManager;
+        private readonly Random _random;
+        private double _elapsedSeconds;
 
         public AirplaneSpawner(ISimulationProperties properties, IAirplaneManager manager)
         {
-            this.simulationProperties = properties;
+            _simulationProperties = properties;
 
-            this.AirplaneManager = manager;
+            _airplaneManager = manager;
 
-            random = new Random();
-
-            SpawnAirplane();
+            _random = new Random();
         }
 
 
-        private void SpawnAirplane()
+        public void SpawnAirplane()
         {
-            int x = 0;
-            int y = 0;
+            var x = 0;
+            var y = 0;
 
-            x = random.Next(-SPAWN_MAXIMUM, SPAWN_MAXIMUM);
+            var p = _random.NextGaussian();
+            x = (int)Utils.Map(p, -4, 4, -SpawnHorizon, SpawnHorizon);
 
-            if(x > SPAWN_HORIZON || x < -SPAWN_HORIZON)
+            if (x > SpawnHorizon || x < -SpawnHorizon)
             {
-                y = random.Next(-SPAWN_MAXIMUM, SPAWN_MAXIMUM);
+                y = _random.Next(-SpawnHorizon, SpawnHorizon);
             }
             else
             {
-                bool plus = random.Next(2) == 0;
-                int plusy = random.Next(SPAWN_HORIZON, SPAWN_MAXIMUM);
-                int minusy = random.Next(-SPAWN_MAXIMUM, -SPAWN_HORIZON);
+                var plus = _random.NextBoolean();
+                var plusy = SpawnHorizon;
+                var minusy = -SpawnHorizon;
                 y = plus ? plusy : minusy;
             }
 
-            GeoPoint point = new GeoPoint(x, y);
-            int heading = (int)point.GetHeadingTo(new GeoPoint(0, 0));
+            var point = new GeoPoint(x, y);
+            var heading = (int)point.GetHeadingTo(new GeoPoint(0, 0));
 
-            AirplaneManager.CreateAircraft(point, heading);
-        }
-
-        private void OnAirplaneSpawn(Aircraft aircraft)
-        {
-            if (this.AirplaneSpawn != null)
-                AirplaneSpawn(this, new AirplaneSpawnEventArgs(aircraft));
+            _airplaneManager.CreateAircraft(point, heading);
         }
 
         public override void AfterUpdate()
         {
-            elapsedMilliSeconds += FrameDispatcher.DeltaTime * simulationProperties.SimulationSpeed;
-            if(elapsedMilliSeconds >= 60 / simulationProperties.AircraftSpawnsPerMinute)
-            {
-                SpawnAirplane();
-                elapsedMilliSeconds = 0;
-            }
+            _elapsedSeconds += FrameDispatcher.DeltaTime * _simulationProperties.SimulationSpeed;
+
+            if (!(_elapsedSeconds >= (60.0 / _simulationProperties.AircraftSpawnsPerMinute))) return;
+
+            SpawnAirplane();
+            _elapsedSeconds = 0;
         }
     }
 }

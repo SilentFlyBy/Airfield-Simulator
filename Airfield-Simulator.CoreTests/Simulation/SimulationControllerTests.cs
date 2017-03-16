@@ -15,41 +15,41 @@ namespace Airfield_Simulator.Core.Tests.Simulation
     public class SimulationControllerTests
     {
 
-        SimulationController SimController;
-        Mock<IAirplaneManager> ApManager;
-        Mock<IFlightDirector> FlightDirector;
-        Mock<ISimulationProperties> SimProperties;
-        Mock<IAirplaneSpawner> AirplaneSpawner;
+        SimulationController _simController;
+        Mock<IAirplaneManager> _apManager;
+        Mock<IFlightDirector> _flightDirector;
+        Mock<ISimulationProperties> _simProperties;
+        Mock<IAirplaneSpawner> _airplaneSpawner;
 
 
         [SetUp]
         public void Initialize()
         {
-            ApManager = new Mock<IAirplaneManager>();
-            FlightDirector = new Mock<IFlightDirector>();
-            AirplaneSpawner = new Mock<IAirplaneSpawner>();
-            SimProperties = new Mock<ISimulationProperties>();
+            _apManager = new Mock<IAirplaneManager>();
+            _flightDirector = new Mock<IFlightDirector>();
+            _airplaneSpawner = new Mock<IAirplaneSpawner>();
+            _simProperties = new Mock<ISimulationProperties>();
 
-            SimController = new SimulationController(ApManager.Object, FlightDirector.Object, AirplaneSpawner.Object, SimProperties.Object);
+            _simController = new SimulationController(_apManager.Object, _flightDirector.Object, _airplaneSpawner.Object, _simProperties.Object);
         }
 
 
         [Test]
         public void InitTest()
         {
-            ApManager.Setup(apm => apm.Reset()).Verifiable();
-            SimController.Init(new SimulationProperties() { SimulationSpeed = 1 });
+            _apManager.Setup(apm => apm.Reset()).Verifiable();
+            _simController.Init(new SimulationProperties() { SimulationSpeed = 1 });
 
-            Assert.IsTrue(SimController.SimulationProperties.SimulationSpeed == 1);
-            ApManager.Verify();
+            Assert.IsTrue(_simController.SimulationProperties.SimulationSpeed == 1);
+            _apManager.Verify();
         }
 
         [Test]
         public void ResetTest()
         {
-            SimController.Reset();
+            _simController.Reset();
 
-            Assert.That(!SimController.Running);
+            Assert.That(!_simController.Running);
         }
     }
 }

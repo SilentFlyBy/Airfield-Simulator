@@ -10,42 +10,43 @@ using System.Windows;
 using System.Windows.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace Airfield_Simulator
 {
     public partial class MainWindow : Window
     {
-        public ISimulationProperties SimProperties { get; set; }
-        public ISimulationController SimController { get; set; }
-        public IDrawController DrawController { get; set; }
-        public Task SimulationTask { get; set; }
-        public Task DrawTask { get; set; }
+        private readonly BackgroundWorker _worker;
 
-        private BackgroundWorker worker;
-        private bool running = false;
-
-        private List<int> fpsList;
-        private int fpsCount = 0;
-        private Image image_runway;
+        private ISimulationProperties SimProperties { get; set; }
+        private ISimulationController SimController { get; set; }
+        private readonly IWeatherController _weatherController;
+        private readonly List<int> _fpsList;
+        private int _fpsCount;
+        private double _elapsedSeconds;
+        private int _landedAircraftCount;
+        private readonly Image _imageRunway;
+        private bool _running = false;
 
         public MainWindow()
         {
             InitializeComponent();
-            image_runway = new Image();
+            _imageRunway = new Image();
 
-            worker = new BackgroundWorker()
+            _worker = new BackgroundWorker()
             {
                 WorkerSupportsCancellation = true
             };
-            worker.DoWork += BackgroundWorkerDoWork;
+            _worker.DoWork += BackgroundWorkerDoWork;
 
-            fpsList = new List<int>();
+            _fpsList = new List<int>();
 
 
-            Bindings bindings = new Bindings();
+            var bindings = new Bindings();
 
             using (IKernel kernel = new StandardKernel(bindings))
             {
@@ -53,83 +54,130 @@ namespace Airfield_Simulator
                 SimProperties.SimulationSpeed = 1;
                 SimProperties.InstructionsPerMinute = 10;
 
-                var canvas = new Ninject.Parameters.ConstructorArgument("canvas", this.canvas_draw);
+                var canvas = new Ninject.Parameters.ConstructorArgument("canvas", CanvasDraw);
                 SimController = kernel.Get<ISimulationController>();
-                DrawController = kernel.Get<IDrawController>(canvas);
+                kernel.Get<IDrawController>(canvas);
+                _weatherController = kernel.Get<IWeatherController>();
             }
 
             SimController.AirplaneManager.Collision += (o, e) => OnCollision();
 
-            this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
-            this.SizeChanged += new SizeChangedEventHandler(Image_Runway_Loaded);
+            Loaded += MainWindow_Loaded;
+            SizeChanged += Image_Runway_Loaded;
+            SimController.FlightDirector.AircraftLanded += FlightDirector_AircraftLanded;
         }
 
-        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private void FlightDirector_AircraftLanded(object sender, AircraftLandedEventArgs e)
         {
-            image_runway.Source = new BitmapImage(new Uri("Resources/airport_runway.jpg", UriKind.Relative));
-            image_runway.MaxWidth = 500;
-            image_runway.Loaded += new RoutedEventHandler(Image_Runway_Loaded);
-
-            canvas_draw.Children.Add(image_runway);
+            _landedAircraftCount++;
+            Dispatcher.Invoke(() =>
+            {
+                LabelLandedAircraftCount.Content = _landedAircraftCount;
+            });
         }
 
-        void Image_Runway_Loaded(object sender, RoutedEventArgs e)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Canvas.SetBottom(image_runway, (canvas_draw.ActualHeight / 2) - (image_runway.ActualHeight /2));
-            Canvas.SetLeft(image_runway, (canvas_draw.ActualWidth / 2) - (image_runway.ActualWidth /2));
+            _imageRunway.Source = new BitmapImage(new Uri("Resources/airport_runway.jpg", UriKind.Relative));
+            _imageRunway.MaxWidth = 500;
+            _imageRunway.Loaded += Image_Runway_Loaded;
+
+            CanvasDraw.Children.Add(_imageRunway);
         }
 
-        public void StartSimulation()
+        private void Image_Runway_Loaded(object sender, RoutedEventArgs e)
         {
+            Canvas.SetBottom(_imageRunway, (CanvasDraw.ActualHeight / 2) - (_imageRunway.ActualHeight /2));
+            Canvas.SetLeft(_imageRunway, (CanvasDraw.ActualWidth / 2) - (_imageRunway.ActualWidth /2));
+        }
+
+        private void StartSimulation()
+        {
+            SimProperties.AircraftSpawnsPerMinute = (int) SliderAircraftPerMinute.Value;
+            SimProperties.InstructionsPerMinute = (int) SliderInstructionsPerMinute.Value;
+            SimProperties.AircraftSpeed = (int) SliderAircraftSpeed.Value;
+
             SimController.Init(SimProperties);
 
-            worker.RunWorkerAsync();
+            _worker.RunWorkerAsync();
         }
 
-        public void StopSimulation()
+        private void StopSimulation()
         {
-            worker.CancelAsync();
+            _worker.CancelAsync();
         }
 
         private void button_start_simulation_Click(object sender, RoutedEventArgs e)
         {
-            StartSimulation();
-        }
+            if (!_running)
+            {
+                _running = true;
+                StartSimulation();
+                SliderAircraftPerMinute.IsEnabled = false;
+                SliderInstructionsPerMinute.IsEnabled = false;
+                SliderAircraftSpeed.IsEnabled = false;
 
-        private void button_stop_simulation_Click(object sender, RoutedEventArgs e)
-        {
-            StopSimulation();
+                ButtonStartSimulation.Content = "Stop";
+                var bc = new BrushConverter();
+                var brush = (Brush)bc.ConvertFrom("#FFFF7979");
+                if (brush != null)
+                {
+                    brush.Freeze();
+                    ButtonStartSimulation.Background = brush;
+                }
+            }
+            else
+            {
+                _running = false;
+                StopSimulation();
+
+                ButtonStartSimulation.Content = "Start";
+                var bc = new BrushConverter();
+                var brush = (Brush)bc.ConvertFrom("#FF5FFF77");
+                if (brush != null)
+                {
+                    brush.Freeze();
+                    ButtonStartSimulation.Background = brush;
+                }
+            }
         }
 
         private void OnCollision()
         {
             StopSimulation();
-            MessageBoxResult box = MessageBox.Show("Collision!");
+            MessageBoxResult box = MessageBox.Show("Kollision!");
         }
 
         private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
-            while (!worker.CancellationPending)
+            while (!_worker.CancellationPending)
             {
                 FrameDispatcher.UpdateFrame();
 
-                this.Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(() =>
                 {
-                    if(fpsCount > 5)
+                    if(_fpsCount > 100)
                     {
-                        int sum = 0;
-                        foreach(int i in fpsList)
-                        {
-                            sum += i;
-                        }
-                        label_fps.Content = sum / fpsList.Count;
-                        fpsList.Clear();
-                        fpsCount = 0;
+                        var sum = _fpsList.Sum();
+                        LabelFps.Content = sum / _fpsList.Count;
+                        _fpsList.Clear();
+                        _fpsCount = 0;
                     }
                     else
                     {
-                        fpsList.Add((int)(1 / FrameDispatcher.DeltaTime));
-                        fpsCount++;
+                        _fpsList.Add((int)(1 / FrameDispatcher.DeltaTime));
+                        _fpsCount++;
+                    }
+
+                    _elapsedSeconds += FrameDispatcher.DeltaTime * SimProperties.SimulationSpeed;
+                    LabelTime.Content = string.Format("{0:00.000 s}", _elapsedSeconds);
+                    LabelWind.Content = _weatherController.WindDegrees;
+                    LabelAircraftCount.Content = SimController.AirplaneManager.AircraftList.Count;
+
+                    if (_elapsedSeconds > 300)
+                    {
+                        StopSimulation();
+                        MessageBox.Show("Simulation erfolgreich beendet!");
                     }
                 });
                 
@@ -139,7 +187,31 @@ namespace Airfield_Simulator
         private void slider_simulation_speed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if(SimProperties != null)
-                SimProperties.SimulationSpeed = slider_simulation_speed.Value;
+                SimProperties.SimulationSpeed = SliderSimulationSpeed.Value;
+        }
+
+        private void SliderInstructionsPerMinute_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if(SimProperties != null)
+            {
+                SimProperties.InstructionsPerMinute = (int)SliderInstructionsPerMinute.Value;
+            }
+        }
+
+        private void SliderAircraftPerMinute_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SimProperties != null)
+            {
+                SimProperties.AircraftSpawnsPerMinute = (int)SliderAircraftPerMinute.Value;
+            }
+        }
+
+        private void SliderAircraftSpeed_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SimProperties != null)
+            {
+                SimProperties.AircraftSpeed = (int) SliderAircraftSpeed.Value;
+            }
         }
     }
 }

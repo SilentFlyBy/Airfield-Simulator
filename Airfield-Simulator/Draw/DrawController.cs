@@ -18,29 +18,27 @@ namespace Airfield_Simulator.GUI.Draw
 {
     public class DrawController : SimulationObject, IDrawController
     {
-        public Dictionary<Aircraft, Image> AircraftImageList { get; set; }
-        public double SimulationSpeed { get; set; }
-        
-        private ISimulationController simController;
-        private Canvas canvas;
-        private double ZoomFactor = 10;
+        private Dictionary<Aircraft, Image> AircraftImageList { get; set; }
+        private readonly ISimulationController _simController;
+        private readonly Canvas _canvas;
+        private const double ZoomFactor = 10;
 
 
         public DrawController(Canvas canvas, ISimulationController simcontroller)
         {
-            this.canvas = canvas;
-            this.simController = simcontroller;
+            this._canvas = canvas;
+            this._simController = simcontroller;
 
             this.AircraftImageList = new Dictionary<Aircraft, Image>();
 
-            this.simController.AircraftLanded += new AircraftLandedEventHandler(SimController_Aircraft_Landed);
+            this._simController.AircraftLanded += SimController_Aircraft_Landed;
         }
 
         private void SimController_Aircraft_Landed(object sender, AircraftLandedEventArgs e)
         {
-            canvas.Dispatcher.Invoke(() =>
+            _canvas.Dispatcher.Invoke(() =>
             {
-                canvas.Children.Remove(AircraftImageList[e.Aircraft]);
+                _canvas.Children.Remove(AircraftImageList[e.Aircraft]);
             });
             
             AircraftImageList.Remove(e.Aircraft);
@@ -48,7 +46,7 @@ namespace Airfield_Simulator.GUI.Draw
 
         public override void Update()
         {
-            foreach (Aircraft currentaircraft in simController.AirplaneManager.AircraftList.ToList())
+            foreach (var currentaircraft in _simController.AirplaneManager.AircraftList.ToList())
             {
                 Image currentimage = null;
 
@@ -60,14 +58,14 @@ namespace Airfield_Simulator.GUI.Draw
                 {
                     currentimage = AddAircraft(currentaircraft);
                 }
-                double bottom = currentaircraft.Position.Y / ZoomFactor;
-                double left = currentaircraft.Position.X / ZoomFactor;
+                var bottom = currentaircraft.Position.Y / ZoomFactor;
+                var left = currentaircraft.Position.X / ZoomFactor;
 
-                canvas.Dispatcher.Invoke(() =>
+                _canvas.Dispatcher.Invoke(() =>
                 {
-                    Canvas.SetBottom(currentimage, (bottom + canvas.ActualHeight / 2) - (currentimage.ActualHeight / 2));
-                    Canvas.SetLeft(currentimage, (left + canvas.ActualWidth / 2) - (currentimage.ActualWidth / 2));
-                    RotateTransform rotate = new RotateTransform(currentaircraft.ActualHeading, 25, 25);
+                    Canvas.SetBottom(currentimage, (bottom + _canvas.ActualHeight / 2) - (currentimage.ActualHeight / 2));
+                    Canvas.SetLeft(currentimage, (left + _canvas.ActualWidth / 2) - (currentimage.ActualWidth / 2));
+                    var rotate = new RotateTransform(currentaircraft.ActualHeading, 25, 25);
                     currentimage.RenderTransform = rotate;
                 });
             }
@@ -76,22 +74,20 @@ namespace Airfield_Simulator.GUI.Draw
 
         private Image AddAircraft(Aircraft aircraft)
         {
-            return canvas.Dispatcher.Invoke(() =>
+            return _canvas.Dispatcher.Invoke(() =>
             {
-                Image image = new Image();
-                image.Source = new BitmapImage(new Uri("Resources/sep.png", UriKind.Relative));
+                var image = new Image
+                {
+                    Source = new BitmapImage(new Uri("Resources/sep.png", UriKind.Relative))
+                };
+
                 Canvas.SetZIndex(image, 20);
 
                 AircraftImageList.Add(aircraft, image);
-                canvas.Children.Add(image);
+                _canvas.Children.Add(image);
 
                 return image;
             });
-        }
-
-        private void removeAircraft(Aircraft aircraft)
-        {
-
         }
     }
 }

@@ -15,74 +15,73 @@ namespace Airfield_Simulator.Core.Tests.Simulation
     [TestFixture]
     public class AirplaneManagerTests
     {
-        AirplaneManager ApManager;
-        Mock<ISimulationProperties> Simprops;
+        AirplaneManager _apManager;
+        Mock<ISimulationProperties> _simprops;
 
 
         [SetUp]
         public void Initialize()
         {
-            Simprops = new Mock<ISimulationProperties>();
-
-            ApManager = new AirplaneManager(Simprops.Object);
+            _simprops = new Mock<ISimulationProperties>();
+            _apManager = new AirplaneManager(_simprops.Object);
         }
 
 
         [Test]
         public void CreateAircraftTest()
         {
-            Aircraft ac = ApManager.CreateAircraft(new GeoPoint(2, 3), 10);
+            Aircraft ac = _apManager.CreateAircraft(new GeoPoint(2, 3), 10);
 
             Assert.IsTrue(ac.Position.X == 2);
             Assert.IsTrue(ac.Position.Y == 3);
             Assert.That(ac.ActualHeading, Is.EqualTo(10));
-            Assert.IsTrue(ApManager.AircraftList.Last() == ac);
+            Assert.IsTrue(_apManager.AircraftList.Last() == ac);
         }
 
         [Test]
         public void RemoveAircraftTest()
         {
-            Aircraft ac = ApManager.CreateAircraft(new GeoPoint(2, 3), 10);
-            ApManager.AircraftList.Remove(ac);
+            Aircraft ac = _apManager.CreateAircraft(new GeoPoint(2, 3), 10);
+            _apManager.AircraftList.Remove(ac);
 
-            Assert.That(ApManager.AircraftList.Count, Is.EqualTo(0));
+            Assert.That(_apManager.AircraftList.Count, Is.EqualTo(0));
         }
 
         [Test]
         public void ResetTest()
         {
-            Aircraft ac = ApManager.CreateAircraft(new GeoPoint(2, 3), 10);
-            ApManager.Reset();
+            Aircraft ac = _apManager.CreateAircraft(new GeoPoint(2, 3), 10);
+            _apManager.Reset();
 
-            Assert.IsTrue(ApManager.AircraftList.Count == 0);
+            Assert.IsTrue(_apManager.AircraftList.Count == 0);
         }
 
         [Test]
         public void AirplaneCollisionTest()
         {
             bool collisionEventFired = false;
-            ApManager.Collision += (o, e) => { collisionEventFired = true; };
+            _apManager.Collision += (o, e) => { collisionEventFired = true; };
 
             //Collision
 
-            ApManager.CreateAircraft(new GeoPoint(0, 0), 90);
-            ApManager.CreateAircraft(new GeoPoint(40, 0), 270);
+            _apManager.CreateAircraft(new GeoPoint(0, 0), 90);
+            _apManager.CreateAircraft(new GeoPoint(40, 0), 270);
 
-            ApManager.BeforeUpdate();
+            _apManager.AfterUpdate();
 
             Assert.IsTrue(collisionEventFired);
 
 
-            ApManager.Reset();
+            _apManager.Reset();
             collisionEventFired = false;
 
 
             //No collision
 
-            ApManager.CreateAircraft(new GeoPoint(0, 0), 90);
-            ApManager.CreateAircraft(new GeoPoint(201, 0), 270);
+            _apManager.CreateAircraft(new GeoPoint(0, 0), 90);
+            _apManager.CreateAircraft(new GeoPoint(201, 0), 270);
 
-            ApManager.BeforeUpdate();
+            _apManager.BeforeUpdate();
 
             Assert.IsFalse(collisionEventFired);
 
